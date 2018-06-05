@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>开拓疆土排行版Demo</title>
+    <link rel="stylesheet" type="text/css" href="../dist/css/jquery.fullPage.css">
+    <link rel="stylesheet" type="text/css" href="../dist/css/style.css">
+    <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../resources/font-awesome/css/font-awesome.css">
+
+</head>
+
+<body>
+    <div id="container">
+        <p>{{woodProduct.productName}}</p>
+        <button id="cityBuilding" onclick="getBuildingRank(1)">点击查看城市排行榜</button>
+        <button id="villageBuilding" onclick="getBuildingRank(0)">点击查看村庄排行榜</button>
+        <button id="woodProduct" onclick="getProductRank(0)">点击查看木头排行榜</button>
+        <button id="brickProduct" onclick="getProductRank(1)">点击查看砖块排行榜</button>
+        <button id="woolProduct" onclick="getProductRank(2)">点击查看羊毛排行榜</button>
+        <button id="foodProduct" onclick="getProductRank(3)">点击查看粮食排行榜</button>
+        <button id="mineralProduct" onclick="getProductRank(4)">点击查看矿石排行榜</button>
+        <div>
+            <ul id="rank">
+
+            </ul>
+        </div>
+    </div>
+</body>
+
+
+<script src="../dist/js/jquery-3.3.1.min.js"></script>
+<script src="../dist/js/jquery.fullPage.js"></script>
+<script src="../dist/js/nebulas/nebPay.js"></script>
+<script src="../dist/js/nebulas/nebulas.js"></script>
+
+<script src="../resources/bootstrap/js/bootstrap.js"></script>
+
+
+<script>
+    function checkID() {
+        window.postMessage({
+            "target": "contentscript",
+            "data": {},
+            "method": "getAccount",
+        }, "*");
+        window.addEventListener('message', function (e) {
+            if (e.data && e.data.data) {
+                if (e.data.data.account) {//这就是当前钱包中的地址
+                    var account = e.data.data.account;
+                    if(account=='n1QVFUAEEE8Nz3TsCe2TtcW53ZVrR5Qb9af' || account=='n1Ft17PTSw7YjaQULBiKyBeMguZCcECqHek'){
+                        window.location.href='createNovel.html';
+                    }else{
+                        alert("不好意思，只有管理员才可以新建小说，您可以去参与小说创作！");
+                        return;
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<script>
+
+    "use strict";
+
+    var dappContactAddress = "n1gWbChQ3qq6sLc1V6Cn5Vwy65RnB5nU8cp";
+    var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+
+    // NebPay SDK 为不同平台的交易提供了统一的支付接口
+    // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
+    var NebPay = require("nebpay");
+    var nebPay = new NebPay();
+
+    // 执行合约返回的交易流水号，用于查询交易信息
+    var serialNumber;
+    
+    function compare(property){
+        return function(a,b){
+            return a[property] - b[property];
+        }
+    }
+
+    function getBuildingRank(buildingID) {
+        var to = dappContactAddress;
+        var value = "0";
+        var callFunction = "getBuilding";
+        var callArgs = "[\"" + buildingID + "\"]";
+        console.log(callArgs);
+
+        serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+            listener: function (resp) {
+                //console.log("thecallback is " + resp)
+                console.log("The result is:"+ resp.result);
+                var sortResult = resp.result;
+                sortResult = sortResult.sort(compare('numOfBuilding'));
+                var length = sortResult.length>100 ? 100 : sortResult.length;
+                for(var i = 0;i<length;i++){
+                    var ele = '<li>'+ sortResult[i].numOfBuilding + '</li>';
+                    $('#rank').append(ele);
+                }
+            }
+        });
+    }
+
+    function getProductRank(productID) {
+        var to = dappContactAddress;
+        var value = "0";
+        var callFunction = "getProduct";
+        var callArgs = "[\"" + productID + "\"]";
+        console.log(callArgs);
+
+        serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+            listener: function (resp) {
+                console.log("thecallback is " + resp);
+                var sortResult = resp.result;
+                sortResult = sortResult.sort(compare('numOfProduct'));
+                var length = sortResult.length>100 ? 100 : sortResult.length;
+                for(var i = 0;i<length;i++){
+                    var ele = '<li>'+ sortResult[i].numOfBuilding + '</li>';
+                    $('#rank').append(ele);
+                }
+            }
+        });
+    }
+
+</script>
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+<script src="../dist/js/pages/rankDemo.js"></script>
+
+
+
+</html>

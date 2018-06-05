@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>开拓疆土个人信息Demo</title>
+    <link rel="stylesheet" type="text/css" href="../dist/css/jquery.fullPage.css">
+    <link rel="stylesheet" type="text/css" href="../dist/css/style.css">
+    <link rel="stylesheet" href="../resources/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../resources/font-awesome/css/font-awesome.css">
+
+</head>
+
+<body>
+    <div id="container">
+        
+    </div>
+</body>
+
+
+<script src="../dist/js/jquery-3.3.1.min.js"></script>
+<script src="../dist/js/jquery.fullPage.js"></script>
+<script src="../dist/js/nebulas/nebPay.js"></script>
+<script src="../dist/js/nebulas/nebulas.js"></script>
+
+<script src="../resources/bootstrap/js/bootstrap.js"></script>
+
+
+<script>
+    function checkID() {
+        window.postMessage({
+            "target": "contentscript",
+            "data": {},
+            "method": "getAccount",
+        }, "*");
+        window.addEventListener('message', function (e) {
+            if (e.data && e.data.data) {
+                if (e.data.data.account) {//这就是当前钱包中的地址
+                    var account = e.data.data.account;
+                }
+            }
+        });
+    }
+</script>
+
+<script>
+
+    "use strict";
+
+    var dappContactAddress = "n1gWbChQ3qq6sLc1V6Cn5Vwy65RnB5nU8cp";
+    var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+
+    // NebPay SDK 为不同平台的交易提供了统一的支付接口
+    // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
+    var NebPay = require("nebpay");
+    var nebPay = new NebPay();
+
+    // 执行合约返回的交易流水号，用于查询交易信息
+    var serialNumber;
+
+</script>
+
+<script src="../resources/vue/vue.js"></script>
+<script src="../resources/vue-resource/vue-resource.js"></script>
+
+<script src="../dist/js/pages/userInfoDemo.js"></script>
+
+
+
+</html>
