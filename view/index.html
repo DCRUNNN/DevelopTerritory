@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <title>开疆拓土</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" media="screen" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Custom CSS-->
+     <link href="stylesheets/common.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <nav id = "nav" class="navbar-default navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <div class = "title">
+                <img class = "logo" src = "images/w_logo.png">
+                <img class = "w_logo" src = "images/title.png">
+            </div>
+            <button type="button" class="navbar-toggle nav-content navbar-right" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
+		    <ul class = "nav navbar-nav">
+		      <li><a href = "#"><img src = "images/map.png">地图</a></li>
+		      <li><a href = "#"><img src = "images/home.png">建筑</a></li>
+		      <li><a href = "#"><img src = "images/brick.png">资源</a></li>
+		      <li><a href = "#"><img src = "images/deal.png">交易所</a></li>
+		      <li><a href = "#"><img src = "images/medal.png">排行榜</a></li>
+		      <li><a href = "#"><img src = "images/infor.png">说明</a></li>
+		      <li><a href = "#"><img src = "images/map.png">地图</a></li>
+		    </ul>
+		    <ul class = "nav navbar-nav navbar-right">
+		      <li><a href = "#"><img src = "images/money.png">钱包插件</a></li>
+		    </ul>
+        </div>
+    </nav>
+
+    <div class = "lucky-number">
+        <div  class = "more"><a href = "#"><img src = "images/left.png"></a></div>
+        <ul>
+            <li><img src = "images/numbers/1.png"></li>
+            <li><img src = "images/numbers/2.png"></li>
+            <li><img src = "images/numbers/3.png"></li>
+            <li><img src = "images/numbers/14.png"></li>
+            <li><img src = "images/numbers/4.png"></li>
+            <li><img src = "images/numbers/7.png"></li>
+            <li><img src = "images/numbers/17.png"></li>
+            <li><img src = "images/numbers/9.png"></li>
+            <li><img src = "images/numbers/12.png"></li>
+            <li class = "active"><img src = "images/numbers/10.png"></li>
+        </ul>
+        <div  class = "more"><a href = "#"><img src = "images/right.png"></a></div>
+    </div>
+
+    <div class = "main">
+         <canvas id = "map" width = "6000" height= "4000">
+         </canvas>
+         <div class = "map-control">
+             <a href = "#" class = "zoom-in" id = "in">+</a>
+             <a href = "#" class = "zoom-out" id = "out">-</a>
+         </div>
+    </div>
+
+
+   	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+
+		canvas=document.getElementById('map');
+		ctx=canvas.getContext('2d');
+		bg_img = new Image();
+        bg_img.src = "images/background.png";
+        oriX = 0.0;
+        oriY = 0.0;
+        scale = 1.0;
+		bg_img.onload = function () {
+			var can = document.createElement("canvas");
+		    can.width = 128;
+		    can.height = 74.5;
+		    var ctx2 = can.getContext("2d");
+		    ctx2.drawImage(bg_img,0,0,128,74.5);
+		    ctx.fillStyle = ctx.createPattern(can,"repeat");
+		    drawScene(0,0);
+        }
+
+         function drawScene(a,b){  
+         	ctx.clearRect(0,0,canvas.width,canvas.height);
+		    ctx.translate(a,b);
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }  
+
+        $("#in").click(function(){
+        	if(scale * 1.5 > 4)return;
+        	scale*= 1.5;
+        	resize();
+        });
+
+        $("#out").click(function(){
+        	if(scale / 1.5 < 0.5)return;
+        	scale/= 1.5;
+        	resize();
+        });
+
+        function resize(){
+        	var can = document.createElement("canvas");
+		    can.width = 128* scale;
+		    can.height = 74.5 * scale;
+		    var ctx2 = can.getContext("2d");
+		    ctx2.drawImage(bg_img,0,0,128 * scale,74.5 * scale);
+		    ctx.fillStyle = ctx.createPattern(can,"repeat");
+		    ctx.translate(-oriX,-oriY);
+		    oriX *= scale;
+		    oriY *= scale;
+		    drawScene(oriX,oriY);
+        }
+
+        canvas.onmousedown = function(ev){  
+            var e = ev||event;  
+            x = e.clientX;  
+            y = e.clientY;  
+            drag(x,y);  
+        };  
+        //拖拽函数  
+        function drag(x,y){  
+            // 当画布上有多个路径时，isPointInPath只能判断最后那一个绘制的路径  
+                //路径正确，鼠标移动事件  
+            //alert("drag!");
+            canvas.onmousemove = function(ev){  
+                var e = ev||event;   
+                var ax = e.clientX;  
+                var ay = e.clientY; 
+                
+                if(oriX + ax - x < 0 && oriY + ay - y < 0 && oriX + ax - x > -4000 && oriY + ay - y > -1800)  {
+                    drawScene(ax - x,ay - y);  
+                    oriX = oriX + ax - x; oriY = oriY + ay - y;
+                }
+                x = ax; y = ay;
+                console.log("oriX:" + oriX + "  oriY:" + oriY);
+            };  
+            //鼠标移开事件  
+            canvas.onmouseup = function(ev){  
+                canvas.onmousemove = null;  
+                canvas.onmouseup = null;  
+            };  
+        };  
+
+	</script>
+
+  </body>
+</html>
