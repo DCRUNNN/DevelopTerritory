@@ -220,35 +220,6 @@ TerritoryService.prototype = {
 
     },
 
-    getAllBuildingByUser:function (wallet) {
-        return this.buildingRepo.get(wallet);  //wallet即userID
-    },
-
-    getAllProductByUser:function (wallet) {
-        return this.productRepo.get(wallet);
-    },
-
-    getAllRoadByUser:function (wallet) {
-        return this.roadRepo.get(wallet);
-    },
-
-    //用于在交易所中展示
-    getAllBuildings:function () {
-        return this.data.get('allBuildingList');
-    },
-
-    getAllProducts:function () {
-        return this.data.get('allProductList');
-    },
-
-    getAllRoads:function () {
-        return this.data.get('allRoadList');
-    },
-
-    getAllTransactions:function () {
-        return this.data.get('allTransactionList');
-    },
-
     //扩建村庄
     changeVillageToCity:function (buildingID) {
         var allBuildings = this.data.get('allBuildingList');
@@ -587,6 +558,99 @@ TerritoryService.prototype = {
 
         luckyNums.push(luckyNumItem);
         this.luckyNumRepo.set('luckyNumList', luckyNums);
+    },
+
+    getAllBuildingByUser:function (wallet) {
+        return this.buildingRepo.get(wallet);  //wallet即userID
+    },
+
+    getAllProductByUser:function (wallet) {
+        return this.productRepo.get(wallet);
+    },
+
+    getAllRoadByUser:function (wallet) {
+        return this.roadRepo.get(wallet);
+    },
+
+    //用于在交易所中展示
+    getAllBuildings:function () {
+        return this.data.get('allBuildingList');
+    },
+
+    getAllProducts:function () {
+        return this.data.get('allProductList');
+    },
+
+    getAllRoads:function () {
+        return this.data.get('allRoadList');
+    },
+
+    getAllTransactions:function () {
+        return this.data.get('allTransactionList');
+    },
+
+
+    //通过资源ID获取资源的信息,用于排行榜
+    getProduct: function(productID){
+        var allProducts = this.data.get('allProductList');
+        var target = 0;
+        for(const item in allProducts){
+            if(item.productID == productID){
+                target = item;
+                break;
+            }
+        }
+        return target;
+    },
+
+    getBuilding: function(buildingID){
+        var allBuildings = this.data.get('allBuildingList');
+        var target = 0;
+        for(const item in allBuildings){
+            if(item.buildingID == buildingID){
+                target = item;
+                break;
+            }
+        }
+        return target;
+    },
+
+    getRoad: function(roadID){
+        var allRoads = this.data.get('allRoadList');
+        var target = 0;
+        for(const item in allRoads){
+            if(item.roadID == roadID){
+                target = item;
+                break;
+            }
+        }
+        return target;
+    },
+
+    getAllInfoByUser:function () {
+
+        var wallet = Blockchain.transaction.from; //即userID
+
+        var result = {
+            building:'',
+            product:'',
+            road:''
+        };
+
+        var userBuilding = this.buildingRepo.get(wallet);
+        var userProduct = this.productRepo.get(wallet);
+        var userRoad = this.roadRepo.get(wallet);
+        result.building = JSON.stringify(userBuilding);
+        result.product = JSON.stringify(userProduct);
+        result.road = JSON.stringify(userRoad);
+
+        return result;
+
+        //前端分类展示
+        // 先 result = getAllInfoByUser()  具体调用函数方式是neb的那个
+        // var userBuilding = JSON.parse(result.building);       userBuilding.buildingID....userBuilding.buildingType....
+        // var userProduct = JSON.parse(result.product);
+        // var userRoad = JSON.parse(result.road);
     },
 
 };
