@@ -68,6 +68,24 @@ var TransactionItem = function (text) {
     }
 };
 
+// L改为大写了
+var LuckyNumItem = function (text) {
+    if (text) {
+        var obj = JSON.parse(text);
+        this.luckyNum = obj.luckyNum; // 幸运数字
+        this.generateTime = obj.generateTime; //幸运数字生成时间
+    } else {
+        this.luckyNum = -1; // 幸运数字
+        this.generateTime = 0; //幸运数字生成时间 时间戳默认是？？？
+    }
+};
+
+
+/**
+ * UserInfoItem 感觉可以删去
+ */
+
+
 ProductItem().prototype = {
     toString: function () {
         return JSON.stringify(this);
@@ -91,6 +109,13 @@ TransactionItem().prototype = {
         return JSON.stringify(this);
     }
 };
+
+LuckyNumItem().prototype = {
+    toString: function () {
+        return JSON.stringify(this);
+    }
+};
+
 
 var TerritoryService = function () {
     LocalContractStorage.defineMapProperty(this, "data", {
@@ -141,6 +166,16 @@ var TerritoryService = function () {
             return JSON.stringify(o);
         }
     });
+
+    LocalContractStorage.defineMapProperty(this, "luckyNumRepo", {
+        parse: function (text) {
+            return new luckyNum(text);
+        },
+        stringify: function (o) {
+            return JSON.stringify(o);
+        }
+    });
+
 };
 
 TerritoryService.prototype = {
@@ -153,6 +188,8 @@ TerritoryService.prototype = {
         this.data.set('allProductList',[])
         this.data.set('allRoadList',[]);
         this.data.set('allTransactionList',[]);
+
+        this.luckyNumRepo.set('luckyNumList',[]); //幸运数字列表
 
         // TODO: board
     },
@@ -195,6 +232,24 @@ TerritoryService.prototype = {
         return this.roadRepo.get(wallet);
     },
 
+    //用于在交易所中展示
+    getAllBuildings:function () {
+        return this.data.get('allBuildingList');
+    },
+
+    getAllProducts:function () {
+        return this.data.get('allProductList');
+    },
+
+    getAllRoads:function () {
+        return this.data.get('allRoadList');
+    },
+
+    getAllTransactions:function () {
+        return this.data.get('allTransactionList');
+    },
+
+    //扩建村庄
     changeVillageToCity:function (buildingID) {
         var allBuildings = this.data.get('allBuildingList');
 
@@ -294,6 +349,7 @@ TerritoryService.prototype = {
         //总资源守恒，this.data.get('allProductList')不用改
     },
 
+    //type是村庄 or 城市
     sellBuilding:function (buildingID,type,price) {
         var from = Blockchain.transaction.from;
         var index = this.data.get('transactionID');
@@ -338,6 +394,54 @@ TerritoryService.prototype = {
         this.buildingRepo.set(from,userBuildings);
 
         //总资源守恒，this.data.get('allBuildingList')不用改
+    },
+
+
+    sellRoad:function (roadID,price) {
+        var from = Blockchain.transaction.from;
+        var index = this.data.get('transactionID');
+        var time = Blockchain.block.timestamp;
+
+        console.warn(index);
+
+        // 判断用户是否拥有足够资源在前端执行
+        var transaction = new TransactionItem();
+        this.transactionID = index;
+        this.seller = from; // 卖家
+        this.buyer = ''; // 买家
+        this.state = '可购买'; //交易状态
+        this.time = time; //交易发布时间
+        this.stuffName = '道路'+roadID; //卖的资源名称
+        this.stuffID = roadID;
+        this.ammount = 1;
+        this.availableAmmount = 1;
+        this.price = price; //卖的价格
+
+        var userTransactions = this.transactionRepo.get(from) || []; //用户发起的所有交易
+        userTransactions.push(transaction);
+
+        this.transactionRepo.set(from,userTransactions);
+
+        this.data.set('transactionID',index+1); // transactionID++
+
+        var allTransactions = this.data.get('allTransactionList');
+        allTransactions.push(transaction);
+        this.data.set('allTransactionList',allTransactions);  //更新所有的交易
+
+        //减少卖家道路
+        //现在就减少
+        var userRoads = this.roadRepo.get(from);
+        for(var i=0; i<userRoads.length; i++){
+            if(userRoads[i].roadID == roadID){
+                userRoads.splice(i,1); //删除卖家拥有的这个道路
+                break;
+            }
+        }
+
+        this.roadRepo.set(from,userRoads);
+
+        //总资源守恒，this.data.get('allRoadList')不用改
+
     },
 
     //可买家以一单位一单位地买
@@ -423,10 +527,67 @@ TerritoryService.prototype = {
         userBuildings.push(targetBuilding);
 
         this.buildingRepo.set(from,userBuildings);
-    }
+    },
 
 
-    // 道路也可以买卖，加上sellRoad和purchaseRoad
+    purchaseRoad:function (seller,transactionID,roadID) {
+        var buyer = Blockchain.transaction.from;
+
+        var allTransactionList = this.data.get('allTransactionList');
+        for(const item in allTransactionList){
+            if(item.transactionID == transactionID){
+                item.buyer = buyer;
+                item.availableAmmount -= 1;
+                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                    item.state = '交易成功';
+                }
+                break;
+            }
+        }
+
+        var allSellerTransactions = this.transactionRepo.get(seller);
+        for(const item in allSellerTransactions){
+            if(item.transactionID == transactionID){
+                item.buyer = buyer;
+                item.availableAmmount -= 1;
+                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                    item.state = '交易成功';
+                }
+                break;
+            }
+        }
+
+        //增加买家道路
+        var targetRoad = 0;
+        //找到这个道路
+        var allRoads = this.data.get('allRoadList');
+        for(const item in allRoads){
+            if(item.roadID == roadID){
+                targetRoad = item;
+                break;
+            }
+        }
+
+        var userRoads = this.roadRepo.get(buyer);
+        userRoads.push(targetRoad);
+
+        this.roadRepo.set(from,userRoads);
+    },
+
+    //记录产生的幸运数字
+    recordLuckyNumber: function(luckyNum) {
+        var luckyNums = this.luckyNumRepo.get('luckyNumList');
+
+        var timestamp = Date.parse(new Date()); //获取当前时间戳
+        // var time = Blockchain.block.timestamp;
+
+        var luckyNumItem = new LuckyNumItem();
+        luckyNumItem.luckyNum = luckyNum;
+        luckyNumItem.generateTime = timestamp;
+
+        luckyNums.push(luckyNumItem);
+        this.luckyNumRepo.set('luckyNumList', luckyNums);
+    },
 
 };
 
