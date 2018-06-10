@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <title>开疆拓土</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" media="screen" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Custom CSS-->
+     <link href="stylesheets/common.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <nav id = "nav" class="navbar-default navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <div class = "title">
+                <img class = "logo" src = "images/w_logo.png">
+                <img class = "w_logo" src = "images/title.png">
+            </div>
+            <button type="button" class="navbar-toggle nav-content navbar-right" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
+		    <ul class = "nav navbar-nav">
+		      <li><a href = "#"><img src = "images/map.png">地图</a></li>
+		      <li><a href = "#"><img src = "images/home.png">建筑</a></li>
+		      <li><a href = "#"><img src = "images/brick.png">资源</a></li>
+		      <li><a href = "#"><img src = "images/deal.png">交易所</a></li>
+		      <li><a href = "#"><img src = "images/medal.png">排行榜</a></li>
+		      <li><a href = "#"><img src = "images/infor.png">说明</a></li>
+		      <li><a href = "#"><img src = "images/map.png">地图</a></li>
+		    </ul>
+		    <ul class = "nav navbar-nav navbar-right">
+		      <li><a href = "#"><img src = "images/money.png">钱包插件</a></li>
+		    </ul>
+        </div>
+    </nav>
+
+    <div class = "lucky-number">
+        <div  class = "more"><a href = "#"><img src = "images/left.png"></a></div>
+        <ul>
+            <li><img src = "images/numbers/1.png"></li>
+            <li><img src = "images/numbers/2.png"></li>
+            <li><img src = "images/numbers/3.png"></li>
+            <li><img src = "images/numbers/14.png"></li>
+            <li><img src = "images/numbers/4.png"></li>
+            <li><img src = "images/numbers/7.png"></li>
+            <li><img src = "images/numbers/17.png"></li>
+            <li><img src = "images/numbers/9.png"></li>
+            <li><img src = "images/numbers/12.png"></li>
+            <li class = "active"><img src = "images/numbers/10.png"></li>
+        </ul>
+        <div  class = "more"><a href = "#"><img src = "images/right.png"></a></div>
+    </div>
+
+    <div class = "main">
+         <canvas id = "map" width = "8000" height= "4000">
+         </canvas>
+         <div class = "map-control">
+             <a href = "#" class = "zoom-in" id = "in">+</a>
+             <a href = "#" class = "zoom-out" id = "out">-</a>
+         </div>
+    </div>
+
+
+   	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+
+		canvas=document.getElementById('map');
+		can = document.createElement("canvas");
+		ctx=canvas.getContext('2d');
+		bg_img = new Image();
+        bg_img.src = "images/background2.png";
+        controlScale = 1.5;//拖动鼠标时地图跟随距离
+        n = 6;
+        offsetX = 20;
+        offsetY = 10;
+        maps = new Array(n);
+        posSet = [[17, 5, 0,-5],
+                  [12, 4,-1,-5], [ 1, 3, 1,-5],
+                  [ 2, 5,-3,-4], [ 1, 5,-2,-4], [ 6, 4,-1,-4], [4, 0, 0,-4], [7, 2, 1, -4], [12, 0, 2, -4], [12, 0, 3, -4],
+                  [ 1, 4,-5,-3], [ 9, 5,-4,-3], [ 8, 1,-3,-3], [ 7, 2,-2,-3], [8, 0,-1,-3], [9, 3, 0, -3], [12, 5, 1, -3], [ 3, 2, 2, -3], [6, 3, 3, -3],[7, 2, 4, -3],[3, 0, 5,-3],
+                  [ 3, 0,-5,-2],[ 5, 2,-4,-2], [ 4, 1,-3,-2], [17, 3,-2,-2], [3, 0,-1,-2], [3, 5, 0, -2], [15, 3, 1, -2], [ 6, 1, 2, -2], [6, 3, 3, -2],[7, 4, 4, -2],[2, 2, 5,-2],
+                  [ 1, 4,-5,-3], [ 9, 5,-4,-3], [ 8, 1,-3,-3], [ 7, 2,-2,-3], [8, 0,-1,-3], [9, 3, 0, -3], [12, 5, 1, -3], [ 3, 2, 2, -3], [6, 3, 3, -3],[7, 2, 4, -3],[3, 0, 5,-3],
+                  [ 3, 0,-5,-1],[ 5, 2,-4,-1], [ 4, 1,-3,-1], [17, 3,-2,-1], [3, 0,-1,-1], [3, 5, 0, -1], [15, 3, 1, -1], [ 6, 1, 2, -1], [6, 3, 3, -1],[7, 4, 4, -1],[2, 2, 5,-1],
+                  [ 1, 4,-5,0], [ 9, 5,-4,0], [ 8, 1,-3,0], [ 7, 2,-2,0], [8, 2,-1,0], [9, 3, 0, 0], [12, 1, 1, 0], [ 3, 2, 2, 0], [6, 3, 3, 0],[7, 2, 4, 0],[3, 0, 5,0],
+                  [ 3, 0,-5,1],[ 5, 2,-4,1], [ 4, 3,-3,1], [17, 3,-2,1], [3, 0,-1,1], [3, 4, 0, 1], [15, 3, 1, 1], [ 6, 1, 2, 1], [6, 0, 3, 1],[7, 4, 4, 1],[2, 2, 5,1],
+                   [ 3, 0,-5,2],[ 5, 2,-4,2], [ 4, 2,-3,2], [16, 3,-2,2], [3, 0,-1,2], [3, 5, 0, 2], [25, 3, 1, 2], [ 6, 2, 2, 2], [6, 3, 3, 2],[7, 4, 4, 2],[2, 2, 5,2],
+                   [ 2, 5,-4,3],[ 2, 5,-3,3], [ 1, 5,-2,3], [ 6, 4,-1,3], [4, 0, 0,3], [7, 2, 1, 3], [12, 0, 2, 3], [12, 0, 3, 3],[ 2, 5, 4,3],
+                   [ 1, 3,-2,4], [12, 4,-1,4], [12, 4, 0,4], [ 1, 3, 1,4],[12, 4, 2,4], 
+                   [17, 5, 0,5]];
+                  //数字，序号0~5，横位置，纵位置
+        for (var i = 0; i < 6; i++){
+        	maps[i] = new Image();
+        }
+        maps[0].src = "images/maps/草原.png";
+        maps[1].src = "images/maps/平原.png";
+        maps[2].src = "images/maps/矿山.png";
+        maps[3].src = "images/maps/泥土.png";
+        maps[4].src = "images/maps/森林.png";
+        maps[5].src = "images/maps/沙漠.png";
+
+        oriX = -offsetX * 64 - 64 + $(window).width()/2;
+        if(oriX > 0)
+        	oriX = 0;
+        oriY = -offsetY * 72 + $(window).height()/2;
+        if(oriY > 0)
+        	oriY = 0;
+        scale = 1.0;
+		bg_img.onload = function () {
+		    for(var i = 0; i < n; i ++){
+		    	maps[i].onload = function() {  
+                   n--;
+                   //console.log(n);
+                   if(!n){
+                   	   resize();
+                   }
+                }
+            };
+        }
+
+         function drawScene(a,b){  
+         	ctx.clearRect(0,0,canvas.width * scale,canvas.height * scale);
+		    ctx.translate(a,b);
+		    ctx.fillStyle = ctx.createPattern(can,"repeat");
+            ctx.fillRect(0, 0, canvas.width * scale, canvas.height * scale);    
+            for(var i = 0; i < posSet.length; i++){
+            	if(scale < 1.0)
+            		x = (26 + (offsetX+ posSet[i][2]) * 64 )* 1.0* scale
+            	else
+            		x = (28 + (offsetX+ posSet[i][2]) * 64 )* 1.0* scale;
+            	if(posSet[i][2]%2 == 0)
+            		y = ((posSet[i][3] + offsetY) * 72 + 2) * scale;
+                else
+                	y = ((posSet[i][3] + offsetY) * 72  + 38) * scale;
+                ctx.drawImage(maps[posSet[i][1]], x, y, 68 * scale, 58 * scale);
+                ctx.beginPath();  
+                ctx.arc(x + 34*scale, y + 30*scale, 18 * scale,Math.PI*2,false);  
+		        ctx.fillStyle="rgba(255,255,255,0.6)";//白色  
+		        ctx.fill();  
+		        ctx.strokeStyle="rgba(255,255,255,0.2)";//半透明白色  
+		        ctx.stroke();  
+		        ctx.font= 16 * scale + "px" +  " bold 微软雅黑";
+		        ctx.fillStyle="rgba(100,100,100,0.8)";
+		        if(posSet[i][0] < 10)
+		            ctx.fillText(posSet[i][0] ,x + 30*scale,y + 35*scale);
+		        else
+		        	ctx.fillText(posSet[i][0] ,x + 25*scale,y + 35*scale);
+            }
+        }  
+
+        $("#in").click(function(){
+        	if(scale * 1.5 > 4)return;//放大倍数最大为4
+        	scale*= 1.5;
+        	ctx.translate(-oriX ,-oriY);//移回原始位置
+		    oriX = oriX * 1.5 - $(window).width()* 0.25;
+		    if(oriX > 0)
+		    	oriX  = 0;
+		    else if(oriX < -4000*scale)
+		    	oriX = -4000;
+		    oriY = oriY * 1.5 - $(window).height() * 0.25;
+		    if(oriY > 0)
+		    	oriY = 0;
+		    else if (oriY < -1800*scale)
+		    	oriY = -1800;
+        	resize();
+        });
+
+        $("#out").click(function(){
+        	if(scale / 1.5 < 0.5)return;
+        	scale/= 1.5;
+        	ctx.translate(-oriX ,-oriY);
+		    oriX = oriX / 1.5 + $(window).width()* 0.25/1.5;
+		    if(oriX > 0)
+		    	oriX  = 0;
+		    else if(oriX < -4000*scale)
+		    	oriX = -4000;
+		    oriY = oriY / 1.5 + $(window).height() * 0.25/1.5;
+		    if(oriY > 0)
+		    	oriY = 0;
+		    else if (oriY < -1800*scale)
+		    	oriY = -1800;
+        	resize();
+        });
+
+        function resize(){
+		    can.width = 128* scale;
+		    can.height = 72 * scale;
+		    var ctx2 = can.getContext("2d");
+		    ctx2.drawImage(bg_img,0,0,128 * scale,72 * scale);
+		    drawScene(oriX, oriY);
+        }
+
+        canvas.onmousedown = function(ev){  
+            var e = ev||event;  
+            x = e.clientX;  
+            y = e.clientY;  
+            drag(x,y);  
+        };  
+        //拖拽函数  
+        function drag(x,y){  
+            // 当画布上有多个路径时，isPointInPath只能判断最后那一个绘制的路径  
+                //路径正确，鼠标移动事件  
+            //alert("drag!");
+            canvas.onmousemove = function(ev){  
+                var e = ev||event;   
+                var ax = e.clientX;  
+                var ay = e.clientY; 
+                
+                if(oriX + ax - x < 0 && oriY + ay - y < 0 && oriX + ax - x > -4000* scale && oriY + ay - y > -1800 * scale)  {
+                    drawScene(controlScale*(ax - x),controlScale* (ay - y));  
+                    oriX = oriX + controlScale * (ax - x); oriY = oriY + controlScale * (ay - y);
+                }
+                x = ax; y = ay;
+                console.log("oriX:" + oriX + "  oriY:" + oriY);
+            };  
+            //鼠标移开事件  
+            canvas.onmouseup = function(ev){  
+                canvas.onmousemove = null;  
+                canvas.onmouseup = null;  
+            };  
+        };  
+
+	</script>
+
+  </body>
+</html>

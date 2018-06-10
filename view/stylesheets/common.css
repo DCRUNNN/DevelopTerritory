@@ -154,25 +154,26 @@ a, a:link, a:visited, a:hover, a:active{
 
 .map-control{
 	position: absolute;
-	top: 600px;
-	right: 200px;
+	top: 550px;
+	right: 50px;
 }
 
 .map-control a{
 	display: inline-block;
 	background-color: white;
-	opacity: 0.5;
+	opacity: 0.7;
 	border-radius: 50%;
-	width: 30px;
-	height: 30px;
-	line-height: 30px;
+	width: 40px;
+	height: 40px;
+	padding-top: 7px;
 	text-align: center;
+	font-size: 1.8rem;
 	margin: 10px;
 	transition: opacity 0.3s;
 }
 
 .map-control a:hover{
-	opacity: 0.7;
+	opacity: 0.9;
 }
 @media(max-width: 768px){
    html{

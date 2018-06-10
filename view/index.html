@@ -61,7 +61,7 @@
     </div>
 
     <div class = "main">
-         <canvas id = "map" width = "6000" height= "4000">
+         <canvas id = "map" width = "8000" height= "4000">
          </canvas>
          <div class = "map-control">
              <a href = "#" class = "zoom-in" id = "in">+</a>
@@ -75,51 +75,178 @@
 	<script type="text/javascript">
 
 		canvas=document.getElementById('map');
+		can = document.createElement("canvas");
 		ctx=canvas.getContext('2d');
 		bg_img = new Image();
         bg_img.src = "images/background.png";
-        oriX = 0.0;
-        oriY = 0.0;
-        scale = 1.0;
+        scale = 1.5;//图像显示缩放比例
+        controlScale = 1.5;//拖动鼠标时地图跟随距离
+        n = 6 + 4;//number of resources: map + road
+        offsetX = 20;
+        offsetY = 10;
+        maps = new Array(6);
+        posSet = [[17, 5, 0,-5],
+                  [12, 4,-1,-5], [ 1, 3, 1,-5],
+                  [ 2, 5,-3,-4], [ 1, 5,-2,-4], [ 6, 4,-1,-4], [4, 0, 0,-4], [7, 2, 1, -4], [12, 0, 2, -4], [12, 0, 3, -4],
+                  [ 1, 4,-5,-3], [ 9, 5,-4,-3], [ 8, 1,-3,-3], [ 7, 2,-2,-3], [8, 0,-1,-3], [9, 3, 0, -3], [12, 5, 1, -3], [ 3, 2, 2, -3], [6, 3, 3, -3],[7, 2, 4, -3],[3, 0, 5,-3],
+                  [ 3, 0,-5,-2],[ 5, 2,-4,-2], [ 4, 1,-3,-2], [17, 3,-2,-2], [3, 0,-1,-2], [3, 5, 0, -2], [15, 3, 1, -2], [ 6, 1, 2, -2], [6, 3, 3, -2],[7, 4, 4, -2],[2, 2, 5,-2],
+                  [ 1, 4,-5,-3], [ 9, 5,-4,-3], [ 8, 1,-3,-3], [ 7, 2,-2,-3], [8, 0,-1,-3], [9, 3, 0, -3], [12, 5, 1, -3], [ 3, 2, 2, -3], [6, 3, 3, -3],[7, 2, 4, -3],[3, 0, 5,-3],
+                  [ 3, 0,-5,-1],[ 5, 2,-4,-1], [ 4, 1,-3,-1], [17, 3,-2,-1], [3, 0,-1,-1], [3, 5, 0, -1], [15, 3, 1, -1], [ 6, 1, 2, -1], [6, 3, 3, -1],[7, 4, 4, -1],[2, 2, 5,-1],
+                  [ 1, 4,-5,0], [ 9, 5,-4,0], [ 8, 1,-3,0], [ 7, 2,-2,0], [8, 2,-1,0], [9, 3, 0, 0], [12, 1, 1, 0], [ 3, 2, 2, 0], [6, 3, 3, 0],[7, 2, 4, 0],[3, 0, 5,0],
+                  [ 3, 0,-5,1],[ 5, 2,-4,1], [ 4, 3,-3,1], [17, 3,-2,1], [3, 0,-1,1], [3, 4, 0, 1], [15, 3, 1, 1], [ 6, 1, 2, 1], [6, 0, 3, 1],[7, 4, 4, 1],[2, 2, 5,1],
+                   [ 3, 0,-5,2],[ 5, 2,-4,2], [ 4, 2,-3,2], [16, 3,-2,2], [3, 0,-1,2], [3, 5, 0, 2], [25, 3, 1, 2], [ 6, 2, 2, 2], [6, 3, 3, 2],[7, 4, 4, 2],[2, 2, 5,2],
+                   [ 2, 5,-4,3],[ 2, 5,-3,3], [ 1, 5,-2,3], [ 6, 4,-1,3], [4, 0, 0,3], [7, 2, 1, 3], [12, 0, 2, 3], [12, 0, 3, 3],[ 2, 5, 4,3],
+                   [ 1, 3,-2,4], [12, 4,-1,4], [12, 4, 0,4], [ 1, 3, 1,4],[12, 4, 2,4], 
+                   [17, 5, 0,5]];
+                  //显示数字，序号0~5，横位置，纵位置
+        pathSet = [[-4, -3, 3], [-4, -3, 1], [-4, -3, 2],[-3, -3, 1], [-4, -2, 2], [-5, -3, 3]];//路径位置，六边形坐标+左上/上/右上
+        structSet = [[-4, -3, 1], [-4, -3, 0], [-5, -3, 1], [-3, -3, 0],[-4, -2, 1], [-4, -2, 0],];//建筑位置，六边形坐标x,y 左/右上角
+        for (var i = 0; i < 6; i++){
+        	maps[i] = new Image();
+        }
+        maps[0].src = "images/maps/草原.png";
+        maps[1].src = "images/maps/平原.png";
+        maps[2].src = "images/maps/矿山.png";
+        maps[3].src = "images/maps/泥土.png";
+        maps[4].src = "images/maps/森林.png";
+        maps[5].src = "images/maps/沙漠.png";
+
+        road = new Array(4);
+        for (var i = 0; i < 4; i++){
+        	road[i] = new Image();
+        }
+        road[0].src = "images/road/circle.png";
+        road[1].src = "images/road/left.png";
+        road[2].src = "images/road/horizon.png";
+        road[3].src = "images/road/right.png";
+
+        oriX = -(offsetX+1) * 64*scale + $(window).width()/2;
+        if(oriX > 0)
+        	oriX = 0;
+        oriY = -offsetY * 72 * scale + $(window).height()/2;
+        if(oriY > 0)
+        	oriY = 0;
 		bg_img.onload = function () {
-			var can = document.createElement("canvas");
-		    can.width = 128;
-		    can.height = 74.5;
-		    var ctx2 = can.getContext("2d");
-		    ctx2.drawImage(bg_img,0,0,128,74.5);
-		    ctx.fillStyle = ctx.createPattern(can,"repeat");
-		    drawScene(0,0);
+		    for(var i = 0; i < 6; i ++){
+		    	maps[i].onload = function() {  
+                   n--;
+                   //console.log(n);
+                   if(!n){
+                   	   resize();
+                   }
+                }
+            };
+            for(var i = 0; i < 4; i ++){
+		    	road[i].onload = function() {  
+                   n--;
+                   //console.log(n);
+                   if(!n){
+                   	   resize();
+                   }
+                }
+            };
         }
 
          function drawScene(a,b){  
-         	ctx.clearRect(0,0,canvas.width,canvas.height);
+         	ctx.clearRect(0,0,canvas.width * scale,canvas.height * scale);
 		    ctx.translate(a,b);
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+		    ctx.fillStyle = ctx.createPattern(can,"repeat");
+            ctx.fillRect(0, 0, canvas.width * scale, canvas.height * scale);    
+            for(var i = 0; i < posSet.length; i++){
+            	if(scale < 1.0)
+            		x = (24 + (offsetX+ posSet[i][2]) * 64 )* 1.0* scale
+            	else
+            		x = (27 + (offsetX+ posSet[i][2]) * 64 )* 1.0* scale;
+            	if(posSet[i][2]%2 == 0)
+            		y = ((posSet[i][3] + offsetY) * 72 - 1) * scale;
+                else
+                	y = ((posSet[i][3] + offsetY) * 72  + 34) * scale;
+                ctx.drawImage(maps[posSet[i][1]], x, y, 74 * scale, 66 * scale);
+                ctx.beginPath();  
+                ctx.arc(x + 36*scale, y + 32*scale, 12 * scale,Math.PI*2,false);  
+		        ctx.fillStyle="rgba(237,239,243,0.9)";//背景色  
+		        ctx.fill();  
+		        ctx.strokeStyle="rgba(237,239,243,0.45)";//半透明背景色  
+		        ctx.stroke();  
+		        ctx.font= 12 * scale + "px" +  " 微软雅黑";
+		        ctx.fillStyle="rgba(50,50,50,0.9)";
+		        if(posSet[i][0] < 10)
+		            ctx.fillText(posSet[i][0] ,x + 32*scale,y + 37*scale);
+		        else
+		        	ctx.fillText(posSet[i][0] ,x + 29*scale,y + 37*scale);
+            }//绘制地图
+            for(var i = 0; i < pathSet.length; i++){
+            	if(scale < 1.0)
+            		x = (14 + (offsetX+ pathSet[i][0]) * 64 )* 1.0* scale;
+            	else
+            		x = (18 + (offsetX+ pathSet[i][0]) * 64 )* 1.0* scale;
+            	if(pathSet[i][0]%2 == 0)
+            		y = ((pathSet[i][1] + offsetY) * 72 - 4) * scale;
+                else
+                	y = ((pathSet[i][1] + offsetY) * 72  + 32) * scale;
+                if(pathSet[i][2] == 1)
+                	ctx.drawImage(road[1], x, y, 28 * scale, 37 * scale);
+                else if(pathSet[i][2] == 2)
+                	ctx.drawImage(road[2], x + 28 * scale, y - 5* scale, 36 * scale, 10 * scale);
+                else
+                	ctx.drawImage(road[3], x + 65* scale, y, 27 * scale, 37 * scale);
+            }//绘制道路
+            for(var i = 0; i < structSet.length; i++){
+            	if(scale < 1.0)
+            		x = (30 + (offsetX+ structSet[i][0]) * 64 )* 1.0* scale
+            	else
+            		x = (35 + (offsetX+ structSet[i][0]) * 64 )* 1.0* scale;
+            	if(structSet[i][0]%2 == 0)
+            		y = ((structSet[i][1] + offsetY) * 72 - 12) * scale;
+                else
+                	y = ((structSet[i][1] + offsetY) * 72  + 25) * scale;
+                if(structSet[i][2] == 0)
+                    ctx.drawImage(road[0], x, y, 15 * scale, 15 * scale);
+                else
+                	ctx.drawImage(road[0], x + 43* scale, y, 15 * scale, 15 * scale);
+            }//绘制建筑
         }  
 
         $("#in").click(function(){
-        	if(scale * 1.5 > 4)return;
+        	if(scale * 1.5 > 4)return;//放大倍数最大为4
         	scale*= 1.5;
+        	ctx.translate(-oriX ,-oriY);//移回原始位置
+		    oriX = oriX * 1.5 - $(window).width()* 0.25;
+		    if(oriX > 0)
+		    	oriX  = 0;
+		    else if(oriX < -4000*scale)
+		    	oriX = -4000;
+		    oriY = oriY * 1.5 - $(window).height() * 0.25;
+		    if(oriY > 0)
+		    	oriY = 0;
+		    else if (oriY < -1800*scale)
+		    	oriY = -1800;
         	resize();
         });
 
         $("#out").click(function(){
         	if(scale / 1.5 < 0.5)return;
         	scale/= 1.5;
+        	ctx.translate(-oriX ,-oriY);
+		    oriX = oriX / 1.5 + $(window).width()* 0.25/1.5;
+		    if(oriX > 0)
+		    	oriX  = 0;
+		    else if(oriX < -4000*scale)
+		    	oriX = -4000;
+		    oriY = oriY / 1.5 + $(window).height() * 0.25/1.5;
+		    if(oriY > 0)
+		    	oriY = 0;
+		    else if (oriY < -1800*scale)
+		    	oriY = -1800;
         	resize();
         });
 
         function resize(){
-        	var can = document.createElement("canvas");
 		    can.width = 128* scale;
-		    can.height = 74.5 * scale;
+		    can.height = 72 * scale;
 		    var ctx2 = can.getContext("2d");
-		    ctx2.drawImage(bg_img,0,0,128 * scale,74.5 * scale);
-		    ctx.fillStyle = ctx.createPattern(can,"repeat");
-		    ctx.translate(-oriX,-oriY);
-		    oriX *= scale;
-		    oriY *= scale;
-		    drawScene(oriX,oriY);
+		    ctx2.drawImage(bg_img,0,0,128 * scale,72 * scale);
+		    drawScene(oriX, oriY);
         }
 
         canvas.onmousedown = function(ev){  
@@ -138,9 +265,9 @@
                 var ax = e.clientX;  
                 var ay = e.clientY; 
                 
-                if(oriX + ax - x < 0 && oriY + ay - y < 0 && oriX + ax - x > -4000 && oriY + ay - y > -1800)  {
-                    drawScene(ax - x,ay - y);  
-                    oriX = oriX + ax - x; oriY = oriY + ay - y;
+                if(oriX + ax - x < 0 && oriY + ay - y < 0 && oriX + ax - x > -4000* scale && oriY + ay - y > -1800 * scale)  {
+                    drawScene(controlScale*(ax - x),controlScale* (ay - y));  
+                    oriX = oriX + controlScale * (ax - x); oriY = oriY + controlScale * (ay - y);
                 }
                 x = ax; y = ay;
                 console.log("oriX:" + oriX + "  oriY:" + oriY);
