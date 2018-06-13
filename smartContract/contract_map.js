@@ -50,4 +50,36 @@ var buildingItem = function(text) {
         var posYOfHexagon = -1;
         var relativePos = -1;
     }
-}
+};
+
+var TerritoryService = function() {
+    LocalContractStorage.defineMapProperty(this, "hexagonRepo", {
+        parse: function(text) {
+            return JSON.parse(text);
+        },
+        stringify: function(o) {
+            return JSON.stringify(o);
+        }
+    });
+
+    // userID => all paths of user
+    LocalContractStorage.defineMapProperty(this, "pathRepo", {
+        parse: function(text) {
+            return new productItem(text);
+        },
+        stringify: function(o) {
+            return JSON.stringify(o);
+        }
+    });
+
+    // userID => all buildings of user
+    LocalContractStorage.defineMapProperty(this, "buildingRepo", {
+        parse: function(text) {
+            return new buildingItem(text);
+        },
+        stringify: function(o) {
+            return JSON.stringify(o);
+        }
+    });
+
+};
