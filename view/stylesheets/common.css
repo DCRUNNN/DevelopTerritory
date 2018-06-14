@@ -204,6 +204,18 @@ a, a:link, a:visited, a:hover, a:active{
 .map-control a:hover{
 	opacity: 0.9;
 }
+
+#infor{
+	position: absolute;
+	line-height: 30px;
+	padding: 5px 20px 5px 10px;
+	font-size: 1.3rem;
+	font-color: #666;
+	background-color: rgb(237, 239, 243, 0.8);
+	border: 1px solid rgba(200, 200, 200, 0.5);
+	box-shadow: 2px 2px 2px rgba(100, 100, 100, 0.3);
+}
+
 @media(max-width: 768px){
    html{
    	font-size: 8px;
