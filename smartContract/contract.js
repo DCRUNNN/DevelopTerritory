@@ -1,15 +1,32 @@
 "use strict";
 
-var ProductItem = function(text){
-    if(text){
+var hexagonItem = function(text) {
+    if (text) {
         var obj = JSON.parse(text);
-        this.belongToBuildingID = obj.belongToBuildingID; // 资源所属建筑
+        this.hexagonID = obj.hexagonID; //六边形ID
+        this.hasLuckyNumberItem = obj.hasLuckyNumberItem; //六边形幸运数字
+        this.productType = obj.productType; //六边形资源类型
+        this.posX = obj.posX; //X轴位置
+        this.posY = obj.posY; //Y轴位置
+    } else {
+        this.hexagonID = -1;
+        this.luckyNumber = -1;
+        this.sourceType = -1;
+        this.posX = -1;
+        this.posY = -1;
+    }
+};
+
+var ProductItem = function(text) {
+    if (text) {
+        var obj = JSON.parse(text);
+        //this.belongToBuildingID = obj.belongToBuildingID; // 资源所属建筑
         this.productID = obj.productID;
         this.numOfProduct = obj.numOfProduct; // 该资源在该建筑中的数量
         this.productName = obj.productName;
         this.owner = obj.owner; // 资源所有者，用户钱包地址
-    }else{
-        this.belongToBuildingID = -1;//-1表示什么资源都不是
+    } else {
+        //this.belongToBuildingID = -1; //-1表示什么资源都不是
         this.productID = -1;
         this.numOfProduct = 0;
         this.productName = ''
@@ -17,31 +34,43 @@ var ProductItem = function(text){
     }
 };
 
-var BuildingItem = function (text) {
+var BuildingItem = function(text) {
     if (text) {
         var obj = JSON.parse(text);
         this.buildingID = obj.buildingID; // 建筑ID
         this.buildingType = obj.buildingType;
         this.owner = obj.owner; // 资源所有者，用户钱包地址
+        this.posXOfHexagon = obj.posXOfHexagon; // 属于的六边形的 X position
+        this.posYOfHexagon = obj.posYOfHexagon; // 属于的六边形的 Y position
+        this.relativePos = obj.relativePos; //相对于六边形的位置, 左上、右上
     } else {
-        this.buildingID = -1;//-1表示什么资源都不是
+        this.buildingID = -1; //-1表示什么资源都不是
         this.buildingType = '';
         this.owner = '';
+        this.posXOfHexagon = 0;
+        this.posYOfHexagon = 0;
+        this.relativePos = -1;
     }
 };
 
-var RoadItem = function (text) {
+var RoadItem = function(text) {
     if (text) {
         var obj = JSON.parse(text);
         this.roadID = obj.roadID; // 道路ID
         this.owner = obj.owner; // 资源所有者，用户钱包地址
+        this.posXOfHexagon = obj.posXOfHexagon; // 属于的六边形的 X position
+        this.posYOfHexagon = obj.posYOfHexagon; // 属于的六边形的 Y position
+        this.relativePos = obj.relativePos; //相对于六边形的位置，左上、上、右上
     } else {
         this.roadID = -1; //-1表示什么资源都不是
         this.owner = '';
+        this.posXOfHexagon = 0;
+        this.posYOfHexagon = 0;
+        this.relativePos = -1;
     }
 };
 
-var TransactionItem = function (text) {
+var TransactionItem = function(text) {
     if (text) {
         var obj = JSON.parse(text);
         this.transactionID = obj.transactionID;
@@ -69,7 +98,7 @@ var TransactionItem = function (text) {
 };
 
 // L改为大写了
-var LuckyNumItem = function (text) {
+var LuckyNumItem = function(text) {
     if (text) {
         var obj = JSON.parse(text);
         this.luckyNum = obj.luckyNum; // 幸运数字
@@ -87,91 +116,100 @@ var LuckyNumItem = function (text) {
 
 
 ProductItem().prototype = {
-    toString: function () {
+    toString: function() {
         return JSON.stringify(this);
     }
 };
 
 BuildingItem().prototype = {
-    toString: function () {
+    toString: function() {
         return JSON.stringify(this);
     }
 };
 
 RoadItem().prototype = {
-    toString: function () {
+    toString: function() {
         return JSON.stringify(this);
     }
 };
 
 TransactionItem().prototype = {
-    toString: function () {
+    toString: function() {
         return JSON.stringify(this);
     }
 };
 
 LuckyNumItem().prototype = {
-    toString: function () {
+    toString: function() {
         return JSON.stringify(this);
     }
 };
 
 
-var TerritoryService = function () {
+var TerritoryService = function() {
     LocalContractStorage.defineMapProperty(this, "data", {
-        parse: function (text) {
+        parse: function(text) {
             return JSON.parse(text);
         },
-        stringify: function (o) {
+        stringify: function(o) {
+            return JSON.stringify(o);
+        }
+    });
+
+    LocalContractStorage.defineMapProperty(this, "hexagonRepo", {
+        parse: function(text) {
+            return new hexagonItem(text);
+        },
+        stringify: function(o) {
             return JSON.stringify(o);
         }
     });
 
     // userID => all products of user
     LocalContractStorage.defineMapProperty(this, "productRepo", {
-        parse: function (text) {
+        parse: function(text) {
             return new productItem(text);
         },
-        stringify: function (o) {
+        stringify: function(o) {
             return JSON.stringify(o);
         }
     });
 
     // userID => all buildings of user
     LocalContractStorage.defineMapProperty(this, "buildingRepo", {
-        parse: function (text) {
+        parse: function(text) {
             return new buildingItem(text);
         },
-        stringify: function (o) {
+        stringify: function(o) {
             return JSON.stringify(o);
         }
     });
 
     // userID => all roads of user
     LocalContractStorage.defineMapProperty(this, "roadRepo", {
-        parse: function (text) {
-            return new userInfo(text);
+        parse: function(text) {
+            return new roadItem(text);
         },
-        stringify: function (o) {
+        stringify: function(o) {
             return JSON.stringify(o);
         }
     });
 
     // 卖家userID => all transactionItem
     LocalContractStorage.defineMapProperty(this, "transactionRepo", {
-        parse: function (text) {
-            return new userInfo(text);
+        parse: function(text) {
+            return new TransactionItem(text);
         },
-        stringify: function (o) {
+        stringify: function(o) {
             return JSON.stringify(o);
         }
     });
 
     LocalContractStorage.defineMapProperty(this, "luckyNumRepo", {
-        parse: function (text) {
+        parse: function(text) {
             return new luckyNum(text);
         },
-        stringify: function (o) {
+        stringify: function(o) {
             return JSON.stringify(o);
         }
     });
@@ -179,22 +217,24 @@ var TerritoryService = function () {
 };
 
 TerritoryService.prototype = {
-    init: function () {
+    init: function() {
+        this.data.set('hexagonID', 1); //六边形ID
         this.data.set('buildingID', 1); // 建筑ID
-        this.data.set('productID',1); //资源ID
-        this.data.set('roadID',1); //道路ID
-        this.data.set('transactionID',1); //交易ID
-        this.data.set('allBuildingList',[]);
-        this.data.set('allProductList',[])
-        this.data.set('allRoadList',[]);
-        this.data.set('allTransactionList',[]);
+        this.data.set('productID', 1); //资源ID
+        this.data.set('roadID', 1); //道路ID
+        this.data.set('transactionID', 1); //交易ID
+        this.data.set('hexagonList', []); //六边形list
+        this.data.set('allBuildingList', []);
+        this.data.set('allProductList', [])
+        this.data.set('allRoadList', []);
+        this.data.set('allTransactionList', []);
 
-        this.luckyNumRepo.set('luckyNumList',[]); //幸运数字列表
+        this.luckyNumRepo.set('luckyNumList', []); //幸运数字列表
 
         // TODO: board
     },
 
-    createBuilding:function (type) {
+    createBuilding: function(type, posX, posY, relPos, isFree) {
 
         var from = Blockchain.transaction.from;
         var index = this.data.get('buildingID');
@@ -205,50 +245,95 @@ TerritoryService.prototype = {
         var building = new BuildingItem();
         building.buildingID = index;
         building.buildingType = type;
+        building.posXOfHexagon = posX;
+        building.posYOfHexagon = posY;
+        building.relativePos = relPos;
         building.owner = from;
 
         var buildingOfUser = this.buildingRepo.get(from) || []; //用户拥有的所有building
         buildingOfUser.push(building);
 
-        this.buildingRepo.set(from,buildingOfUser);
-        
-        this.data.set('buildingID',index+1); // buildingID++
+        this.buildingRepo.set(from, buildingOfUser);
+
+        this.data.set('buildingID', index + 1); // buildingID++
 
         var allBuildings = this.data.get('allBuildingList');
         allBuildings.push(building);
-        this.data.set('allBuildingList',allBuildings);  //更新所有的建筑
+        this.data.set('allBuildingList', allBuildings); //更新所有的建筑
+
+        //减少资源
+        if (isFree == false) {
+            var productOfUser = this.productRepo.get(from) || [];
+            for (const item in productOfUser) {
+                switch (item.productName) {
+                    case "木头":
+                        item.numOfProduct -= 4;
+                        break;
+                    case "砖块":
+                        item.numOfProduct -= 3;
+                        break;
+                    case "羊毛":
+                        item.numOfProduct -= 9;
+                        break;
+                    case "粮食":
+                        item.numOfProduct -= 6;
+                        break;
+                        dafault: break;
+                }
+            }
+            this.productRepo.set(from, productOfUser);
+        }
 
     },
 
     //扩建村庄
-    changeVillageToCity:function (buildingID) {
+    changeVillageToCity: function(buildingID) {
         var allBuildings = this.data.get('allBuildingList');
 
         var target = 0; //要扩建的村庄
 
         //遍历所有的building，找到要扩建的建筑，没有用buildingID作为key，buildingItem作为value存储
-        for(const item in allBuildings){
-            if(item.buildingID == buildingID){
+        for (const item in allBuildings) {
+            if (item.buildingID == buildingID) {
                 item.buildingType = '城市';
                 target = item;
                 break;
             }
         }
 
-        this.data.set('allBuildingList',allBuildings);
+        this.data.set('allBuildingList', allBuildings);
 
         var userBuildings = this.buildingRepo.get(target.owner);
-        for(const item in userBuildings){
-            if(item.buildingID == buildingID){
+        for (const item in userBuildings) {
+            if (item.buildingID == buildingID) {
                 item.buildingType = '城市';
                 break;
             }
         }
 
         //还要处理一下 减少用户资源的问题
+        var from = Blockchain.transaction.from;
+        //减少资源
+        var productOfUser = this.productRepo.get(from) || [];
+        for (const item in productOfUser) {
+            switch (item.productName) {
+                case "粮食":
+                    item.numOfProduct -= 13;
+                    break;
+                case "砖块":
+                    item.numOfProduct -= 6;
+                    break;
+                case "矿石":
+                    item.numOfProduct -= 10;
+                    break;
+                    dafault: break;
+            }
+        }
+        this.productRepo.set(from, productOfUser);
+
     },
 
-    createRoad:function () {
+    createRoad: function(posX, posY, relPos) {
         var from = Blockchain.transaction.from;
         var index = this.data.get('roadID');
 
@@ -257,23 +342,39 @@ TerritoryService.prototype = {
         // 判断用户是否拥有足够资源在前端执行
         var road = new RoadItem();
         road.roadID = index;
+        road.posXOfHexagon = posX;
+        road.posYOfHexagon = posY;
+        road.relativePos = relPos;
         road.owner = from;
 
         var roadOfUser = this.roadRepo.get(from) || []; //用户拥有的所有道路
         roadOfUser.push(road);
 
-        this.roadRepo.set(from,roadOfUser);
+        this.roadRepo.set(from, roadOfUser);
 
-        this.data.set('roadID',index+1); // roadID++
+        this.data.set('roadID', index + 1); // roadID++
 
         var allRoads = this.data.get('allRoadList');
         allRoads.push(road);
-        this.data.set('allRoadList',allRoads);  //更新所有的道路
+        this.data.set('allRoadList', allRoads); //更新所有的道路
 
-        //道路在地图中的位置如何确定？
+        //减少资源
+        var productOfUser = this.productRepo.get(from) || [];
+        for (const item in productOfUser) {
+            switch (item.productName) {
+                case "木头":
+                    item.numOfProduct -= 6;
+                    break;
+                case "砖块":
+                    item.numOfProduct -= 6;
+                    break;
+                    dafault: break;
+            }
+        }
+        this.productRepo.set(from, productOfUser);
     },
 
-    sellProduct:function (productID,productName,price,ammount) {
+    sellProduct: function(productID, productName, price, ammount) {
         var from = Blockchain.transaction.from;
         var index = this.data.get('transactionID');
         var time = Blockchain.block.timestamp;
@@ -296,32 +397,32 @@ TerritoryService.prototype = {
         var userTransactions = this.transactionRepo.get(from) || []; //用户发起的所有交易
         userTransactions.push(transaction);
 
-        this.transactionRepo.set(from,userTransactions);
+        this.transactionRepo.set(from, userTransactions);
 
-        this.data.set('transactionID',index+1); // transactionID++
+        this.data.set('transactionID', index + 1); // transactionID++
 
         var allTransactions = this.data.get('allTransactionList');
         allTransactions.push(transaction);
-        this.data.set('allTransactionList',allTransactions);  //更新所有的交易
+        this.data.set('allTransactionList', allTransactions); //更新所有的交易
 
         //减少卖家资源
-        
+
         //现在就减少吗？还是有人买了再减少
         var userProducts = this.productRepo.get(from);
-        for(const item in userProducts){
-            if(item.productName == productName){
+        for (const item in userProducts) {
+            if (item.productName == productName) {
                 item.numOfProduct -= ammount;
                 break;
             }
         }
 
-        this.productRepo.set(from,userProducts);
-        
+        this.productRepo.set(from, userProducts);
+
         //总资源守恒，this.data.get('allProductList')不用改
     },
 
     //type是村庄 or 城市
-    sellBuilding:function (buildingID,type,price) {
+    sellBuilding: function(buildingID, type, price) {
         var from = Blockchain.transaction.from;
         var index = this.data.get('transactionID');
         var time = Blockchain.block.timestamp;
@@ -343,32 +444,32 @@ TerritoryService.prototype = {
         var userTransactions = this.transactionRepo.get(from) || []; //用户发起的所有交易
         userTransactions.push(transaction);
 
-        this.transactionRepo.set(from,userTransactions);
+        this.transactionRepo.set(from, userTransactions);
 
-        this.data.set('transactionID',index+1); // transactionID++
+        this.data.set('transactionID', index + 1); // transactionID++
 
         var allTransactions = this.data.get('allTransactionList');
         allTransactions.push(transaction);
-        this.data.set('allTransactionList',allTransactions);  //更新所有的交易
+        this.data.set('allTransactionList', allTransactions); //更新所有的交易
 
         //减少卖家建筑
 
         //现在就减少吗？还是有人买了再减少
         var userBuildings = this.buildingRepo.get(from);
-        for(var i=0; i<userBuildings.length; i++){
-            if(userBuildings[i].buildingID == buildingID){
-                userBuildings.splice(i,1); //删除卖家拥有的这个建筑
+        for (var i = 0; i < userBuildings.length; i++) {
+            if (userBuildings[i].buildingID == buildingID) {
+                userBuildings.splice(i, 1); //删除卖家拥有的这个建筑
                 break;
             }
         }
 
-        this.buildingRepo.set(from,userBuildings);
+        this.buildingRepo.set(from, userBuildings);
 
         //总资源守恒，this.data.get('allBuildingList')不用改
     },
 
 
-    sellRoad:function (roadID,price) {
+    sellRoad: function(roadID, price) {
         var from = Blockchain.transaction.from;
         var index = this.data.get('transactionID');
         var time = Blockchain.block.timestamp;
@@ -382,7 +483,7 @@ TerritoryService.prototype = {
         this.buyer = ''; // 买家
         this.state = '可购买'; //交易状态
         this.time = time; //交易发布时间
-        this.stuffName = '道路'+roadID; //卖的资源名称
+        this.stuffName = '道路' + roadID; //卖的资源名称
         this.stuffID = roadID;
         this.ammount = 1;
         this.availableAmmount = 1;
@@ -391,25 +492,25 @@ TerritoryService.prototype = {
         var userTransactions = this.transactionRepo.get(from) || []; //用户发起的所有交易
         userTransactions.push(transaction);
 
-        this.transactionRepo.set(from,userTransactions);
+        this.transactionRepo.set(from, userTransactions);
 
-        this.data.set('transactionID',index+1); // transactionID++
+        this.data.set('transactionID', index + 1); // transactionID++
 
         var allTransactions = this.data.get('allTransactionList');
         allTransactions.push(transaction);
-        this.data.set('allTransactionList',allTransactions);  //更新所有的交易
+        this.data.set('allTransactionList', allTransactions); //更新所有的交易
 
         //减少卖家道路
         //现在就减少
         var userRoads = this.roadRepo.get(from);
-        for(var i=0; i<userRoads.length; i++){
-            if(userRoads[i].roadID == roadID){
-                userRoads.splice(i,1); //删除卖家拥有的这个道路
+        for (var i = 0; i < userRoads.length; i++) {
+            if (userRoads[i].roadID == roadID) {
+                userRoads.splice(i, 1); //删除卖家拥有的这个道路
                 break;
             }
         }
 
-        this.roadRepo.set(from,userRoads);
+        this.roadRepo.set(from, userRoads);
 
         //总资源守恒，this.data.get('allRoadList')不用改
 
@@ -418,15 +519,15 @@ TerritoryService.prototype = {
     //可买家以一单位一单位地买
     //前端可以传入transactionID，以便后端根据ID找到这个交易，设置买家
     //transactionID在前端可以放置在一个隐藏的div里，在调用函数的时候从这个div取得transactionID
-    purchaseProduct:function (seller,transactionID,productName,ammount) {
+    purchaseProduct: function(seller, transactionID, productName, ammount) {
         var buyer = Blockchain.transaction.from;
 
         var allTransactionList = this.data.get('allTransactionList');
-        for(const item in allTransactionList){
-            if(item.transactionID == transactionID){
+        for (const item in allTransactionList) {
+            if (item.transactionID == transactionID) {
                 item.buyer = buyer;
                 item.availableAmmount -= ammount;
-                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                if (item.availableAmmount <= 0) { //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
                     item.state = '交易成功';
                 }
                 break;
@@ -434,11 +535,11 @@ TerritoryService.prototype = {
         }
 
         var allSellerTransactions = this.transactionRepo.get(seller);
-        for(const item in allSellerTransactions){
-            if(item.transactionID == transactionID){
+        for (const item in allSellerTransactions) {
+            if (item.transactionID == transactionID) {
                 item.buyer = buyer;
                 item.availableAmmount -= ammount;
-                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                if (item.availableAmmount <= 0) { //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
                     item.state = '交易成功';
                 }
                 break;
@@ -447,8 +548,8 @@ TerritoryService.prototype = {
 
         //增加买家资源
         var userProducts = this.productRepo.get(buyer);
-        for(const item in userProducts){
-            if(item.productName == productName){
+        for (const item in userProducts) {
+            if (item.productName == productName) {
                 item.numOfProduct += ammount;
                 break;
             }
@@ -456,15 +557,15 @@ TerritoryService.prototype = {
     },
 
 
-    purchaseBuilding:function (seller,transactionID,buildingID) {
+    purchaseBuilding: function(seller, transactionID, buildingID) {
         var buyer = Blockchain.transaction.from;
 
         var allTransactionList = this.data.get('allTransactionList');
-        for(const item in allTransactionList){
-            if(item.transactionID == transactionID){
+        for (const item in allTransactionList) {
+            if (item.transactionID == transactionID) {
                 item.buyer = buyer;
                 item.availableAmmount -= 1;
-                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                if (item.availableAmmount <= 0) { //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
                     item.state = '交易成功';
                 }
                 break;
@@ -472,11 +573,11 @@ TerritoryService.prototype = {
         }
 
         var allSellerTransactions = this.transactionRepo.get(seller);
-        for(const item in allSellerTransactions){
-            if(item.transactionID == transactionID){
+        for (const item in allSellerTransactions) {
+            if (item.transactionID == transactionID) {
                 item.buyer = buyer;
                 item.availableAmmount -= 1;
-                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                if (item.availableAmmount <= 0) { //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
                     item.state = '交易成功';
                 }
                 break;
@@ -487,8 +588,8 @@ TerritoryService.prototype = {
         var targetBuilding = 0;
         //找到这个建筑
         var allBuildings = this.data.get('allBuildingList');
-        for(const item in allBuildings){
-            if(item.buildingID == buildingID){
+        for (const item in allBuildings) {
+            if (item.buildingID == buildingID) {
                 targetBuilding = item;
                 break;
             }
@@ -497,19 +598,19 @@ TerritoryService.prototype = {
         var userBuildings = this.buildingRepo.get(buyer);
         userBuildings.push(targetBuilding);
 
-        this.buildingRepo.set(from,userBuildings);
+        this.buildingRepo.set(from, userBuildings);
     },
 
 
-    purchaseRoad:function (seller,transactionID,roadID) {
+    purchaseRoad: function(seller, transactionID, roadID) {
         var buyer = Blockchain.transaction.from;
 
         var allTransactionList = this.data.get('allTransactionList');
-        for(const item in allTransactionList){
-            if(item.transactionID == transactionID){
+        for (const item in allTransactionList) {
+            if (item.transactionID == transactionID) {
                 item.buyer = buyer;
                 item.availableAmmount -= 1;
-                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                if (item.availableAmmount <= 0) { //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
                     item.state = '交易成功';
                 }
                 break;
@@ -517,11 +618,11 @@ TerritoryService.prototype = {
         }
 
         var allSellerTransactions = this.transactionRepo.get(seller);
-        for(const item in allSellerTransactions){
-            if(item.transactionID == transactionID){
+        for (const item in allSellerTransactions) {
+            if (item.transactionID == transactionID) {
                 item.buyer = buyer;
                 item.availableAmmount -= 1;
-                if(item.availableAmmount<=0){  //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
+                if (item.availableAmmount <= 0) { //前端要限制买家可以购买的数量单位，不可以超过卖家卖的单位
                     item.state = '交易成功';
                 }
                 break;
@@ -532,8 +633,8 @@ TerritoryService.prototype = {
         var targetRoad = 0;
         //找到这个道路
         var allRoads = this.data.get('allRoadList');
-        for(const item in allRoads){
-            if(item.roadID == roadID){
+        for (const item in allRoads) {
+            if (item.roadID == roadID) {
                 targetRoad = item;
                 break;
             }
@@ -542,7 +643,7 @@ TerritoryService.prototype = {
         var userRoads = this.roadRepo.get(buyer);
         userRoads.push(targetRoad);
 
-        this.roadRepo.set(from,userRoads);
+        this.roadRepo.set(from, userRoads);
     },
 
     //记录产生的幸运数字
@@ -560,42 +661,42 @@ TerritoryService.prototype = {
         this.luckyNumRepo.set('luckyNumList', luckyNums);
     },
 
-    getAllBuildingByUser:function (wallet) {
-        return this.buildingRepo.get(wallet);  //wallet即userID
+    getAllBuildingByUser: function(wallet) {
+        return this.buildingRepo.get(wallet); //wallet即userID
     },
 
-    getAllProductByUser:function (wallet) {
+    getAllProductByUser: function(wallet) {
         return this.productRepo.get(wallet);
     },
 
-    getAllRoadByUser:function (wallet) {
+    getAllRoadByUser: function(wallet) {
         return this.roadRepo.get(wallet);
     },
 
     //用于在交易所中展示
-    getAllBuildings:function () {
+    getAllBuildings: function() {
         return this.data.get('allBuildingList');
     },
 
-    getAllProducts:function () {
+    getAllProducts: function() {
         return this.data.get('allProductList');
     },
 
-    getAllRoads:function () {
+    getAllRoads: function() {
         return this.data.get('allRoadList');
     },
 
-    getAllTransactions:function () {
+    getAllTransactions: function() {
         return this.data.get('allTransactionList');
     },
 
 
     //通过资源ID获取资源的信息,用于排行榜
-    getProduct: function(productID){
+    getProduct: function(productID) {
         var allProducts = this.data.get('allProductList');
         var target = 0;
-        for(const item in allProducts){
-            if(item.productID == productID){
+        for (const item in allProducts) {
+            if (item.productID == productID) {
                 target = item;
                 break;
             }
@@ -603,11 +704,11 @@ TerritoryService.prototype = {
         return target;
     },
 
-    getBuilding: function(buildingID){
+    getBuilding: function(buildingID) {
         var allBuildings = this.data.get('allBuildingList');
         var target = 0;
-        for(const item in allBuildings){
-            if(item.buildingID == buildingID){
+        for (const item in allBuildings) {
+            if (item.buildingID == buildingID) {
                 target = item;
                 break;
             }
@@ -615,11 +716,11 @@ TerritoryService.prototype = {
         return target;
     },
 
-    getRoad: function(roadID){
+    getRoad: function(roadID) {
         var allRoads = this.data.get('allRoadList');
         var target = 0;
-        for(const item in allRoads){
-            if(item.roadID == roadID){
+        for (const item in allRoads) {
+            if (item.roadID == roadID) {
                 target = item;
                 break;
             }
@@ -627,14 +728,14 @@ TerritoryService.prototype = {
         return target;
     },
 
-    getAllInfoByUser:function () {
+    getAllInfoByUser: function() {
 
         var wallet = Blockchain.transaction.from; //即userID
 
         var result = {
-            building:'',
-            product:'',
-            road:''
+            building: '',
+            product: '',
+            road: ''
         };
 
         var userBuilding = this.buildingRepo.get(wallet);
@@ -655,8 +756,4 @@ TerritoryService.prototype = {
 
 };
 
-module.exports = TerritoryService;
-
-
-
-
+module.exports = TerritoryService
