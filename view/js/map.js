@@ -273,8 +273,7 @@ function resize(){
 
 //拖拽函数  
 function mouseDrag(mx, my){  
-    // 当画布上有多个路径时, isPointInPath只能判断最后那一个绘制的路径  
-        //路径正确, 鼠标移动事件  
+    //路径正确, 鼠标移动事件  
     svgContainer.on("mousemove", function(ev){  
         var e = ev||event;   
         var ax = e.clientX;  
@@ -287,7 +286,7 @@ function mouseDrag(mx, my){
        mx= ax; my = ay;
         console.log("oriX:" + oriX + "  oriY:" + oriY);
     })
-    //鼠标移开事件  
+    //鼠标松开事件  
     svgContainer.on("mouseup", function(){  
         svgContainer.on("mousemove", null);  
         svgContainer.on("mouseup", null);  
@@ -295,6 +294,7 @@ function mouseDrag(mx, my){
 }
 
 function handDrag(){ 
+	//移动端 拖动
      svg.addEventListener("touchmove", function(event){  
         var e = event.touches[0];   
         var ax = e.clientX;  
@@ -307,7 +307,7 @@ function handDrag(){
         hx= ax; hy = ay;
         console.log("oriX:" + oriX + "  oriY:" + oriY);
     }, false)
-    //鼠标移开事件  
+    //停止触碰事件  
     svg.addEventListener("touchend", function(){  
         svgContainer.on("touchmove", null);  
         svgContainer.on("touchend", null);  
@@ -397,13 +397,13 @@ function lineMask(x, y, width, height, angle, lineType, index){
 		.attr("width", width)
 		.attr("height", height)
 		.attr("transform","rotate(" + angle +"," + lx + " " + ly +")")
-		.style("fill","rgba(255, 255, 200, 0.0)")
+		.style("fill","rgba(255, 255, 200, 0)")
 		.style("cursor", "pointer")
 		.attr("index", index)
 		.attr("pos", angle / 60)
 		.attr("owner", posSet[index].owner[2 + angle/60]);
 
-	if(lineType == 2 && line.attr("owner") != id)line.style("fill","rgba(67, 58, 20, 0.1)");
+	if(lineType == 2 && line.attr("owner") != id)line.style("fill","url(#lightRoad)");
 	if(lineType){
 		line.on("mouseover", function(){
 			if(typeof timer != "undefined")clearTimeout(timer);
@@ -411,7 +411,7 @@ function lineMask(x, y, width, height, angle, lineType, index){
 			timer = setTimeout(function(){
 				if(lineType == 2){
 					if(choosenLine.attr("owner") != id)
-				        choosenLine.transition(200).style("fill", "rgba(67, 58, 20, 0.2)");
+				        choosenLine.transition(200).style("fill", "url(#darkRoad)");
 				    else
 				    	choosenLine.transition(200).style("fill", "rgba(255, 255, 200, 0.08)");
 				    svgContainer.on("mousedown", null)
@@ -426,7 +426,7 @@ function lineMask(x, y, width, height, angle, lineType, index){
 					$("#infor").show();
 				}
 				else if(lineType == 1)
-					choosenLine.transition(200).style("fill", "rgba(188, 176, 134, 0.5)");
+					choosenLine.transition(200).style("fill", "url(#newRoad)");
 				
 			},100)
 		})
@@ -434,9 +434,9 @@ function lineMask(x, y, width, height, angle, lineType, index){
 	line.on("mouseout", function(){
 		if(typeof timer != "undefined")clearTimeout(timer);
 		if(lineType == 2 && line.attr("owner") != id)
-			line.style("fill","rgba(0, 0, 0, 0.1)");
+			line.style("fill","url(#lightRoad)");
 		else
-			line.transition(200).style("fill", "rgba(255, 255, 255, 0)");
+			line.transition(200).style("fill", "rgba(255, 255, 200, 0)");
 		$("#infor").hide();
 		svgContainer.on("mousedown", function(ev){  
 			var e = ev||event;  

@@ -1,0 +1,73 @@
+body{
+    overflow: scroll;
+    min-height: 100%;
+}
+
+p{
+	margin: 0;
+}
+.container{
+    padding-top: 15px;
+    height: 100%;
+}
+
+#villageBuilding,
+#cityBuilding{
+    font-size: 17px;
+}
+
+#villageBuilding img,
+#cityBuilding img{
+    height: auto;
+    width: 80%;
+}
+
+.btn-pic{
+  background-color: rgb(227, 229, 233);
+  border: solid rgb(237, 237, 249) 3px;
+  outline: 0;
+  width: 100%;
+  padding: 12%;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin: 15px 0;
+}
+
+.btn-pic:hover,
+#villageBuilding:hover,
+#cityBuilding:hover{
+  border-color: #DDD;
+  color: #666;
+}
+
+#villageBuilding img{
+    padding-top : 27%;
+}
+
+.btn-pic img {
+  height: 40px;
+  vertical-align: bottom;
+  display: block;
+  margin: 30px auto;
+}
+
+.btn-pic:hover img,
+.btn-pic:hover p{
+	filter:drop-shadow(5px 5px 5px white);
+}
+
+#rank h4{
+	text-align: center;
+
+}
+
+#rank h4 img{
+	height: 30px;
+	padding-bottom: 5px;
+	margin: 5px 10px;
+}
+
+li{
+	border-bottom: 1px #ddd solid; 
+}

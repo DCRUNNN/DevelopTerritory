@@ -29,12 +29,11 @@
         </div>
         <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
 		    <ul class = "nav navbar-nav">
-		      <li><a href = "#"><img src = "images/map.png">地图</a></li>
+		      <li class = "choosen"><a href = "#"><img src = "images/map.png">地图</a></li>
 		      <li><a href = "#"><img src = "images/user.png">个人主页</a></li>
 		      <li><a href = "#"><img src = "images/deal.png">交易所</a></li>
 		      <li><a href = "#"><img src = "images/medal.png">排行榜</a></li>
 		      <li><a href = "#"><img src = "images/infor.png">说明</a></li>
-		      <li><a href = "#"><img src = "images/map.png">地图</a></li>
 		    </ul>
 		    <ul class = "nav navbar-nav navbar-right">
 		      <li><a href = "#"><img src = "images/money.png">钱包插件</a></li>
@@ -63,7 +62,28 @@
     <div class = "main">
          <canvas id = "map" width = "2000" height= "1200">
          </canvas>
-         <svg id = "mapElement"></svg>
+         <svg id = "mapElement" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+		      <linearGradient id="lightRoad" x1="0%" y1="0%" x2="100%" y2="0%">
+		        <stop offset="0%" style="stop-color:rgb(67, 58, 20);stop-opacity:0" />
+		        <stop offset="22%" style="stop-color:rgb(67, 58, 20);stop-opacity:0.2" />
+		        <stop offset="78%" style="stop-color:rgb(67, 58, 20);stop-opacity:0.2" />
+		        <stop offset="100%" style="stop-color:rgb(67, 58, 20);stop-opacity:0" />
+		    </linearGradient>
+		    <linearGradient id="darkRoad" x1="0%" y1="0%" x2="100%" y2="0%">
+		        <stop offset="0%" style="stop-color:rgb(67, 58, 20);stop-opacity:0" />
+		        <stop offset="22%" style="stop-color:rgb(67, 58, 20);stop-opacity:0.3" />
+		        <stop offset="78%" style="stop-color:rgb(67, 58, 20);stop-opacity:0.3" />
+		        <stop offset="100%" style="stop-color:rgb(67, 58, 20);stop-opacity:0" />
+		    </linearGradient>
+		    <linearGradient id="newRoad" x1="0%" y1="0%" x2="100%" y2="0%">
+		        <stop offset="0%" style="stop-color:rgb(188, 176, 134);stop-opacity:0" />
+		        <stop offset="22%" style="stop-color:rgb(188, 176, 134);stop-opacity:0.6" />
+		        <stop offset="78%" style="stop-color:rgb(188, 176, 134);stop-opacity:0.6" />
+		        <stop offset="100%" style="stop-color:rgb(188, 176, 134);stop-opacity:0" />
+		    </linearGradient>
+		  </defs>
+         </svg>
          <div class = "map-control">
              <a href = "#" class = "zoom-in" id = "in">+</a>
              <a href = "#" class = "zoom-out" id = "out">-</a>
