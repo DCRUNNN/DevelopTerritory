@@ -4,7 +4,7 @@ var hexagonItem = function(text) {
     if (text) {
         var obj = JSON.parse(text);
         this.hexagonID = obj.hexagonID; //六边形ID
-        this.hasLuckyNumberItem = obj.hasLuckyNumberItem; //六边形幸运数字
+        this.hasLuckyNumber = obj.hasLuckyNumber; //六边形幸运数字
         this.productType = obj.productType; //六边形资源类型
         this.posX = obj.posX; //X轴位置
         this.posY = obj.posY; //Y轴位置
@@ -114,32 +114,37 @@ var LuckyNumItem = function(text) {
  * UserInfoItem 感觉可以删去
  */
 
+hexagonItem.prototype = {
+    toString: function() {
+        return JSON.stringify(this);
+    }
+}
 
-ProductItem().prototype = {
+ProductItem.prototype = {
     toString: function() {
         return JSON.stringify(this);
     }
 };
 
-BuildingItem().prototype = {
+BuildingItem.prototype = {
     toString: function() {
         return JSON.stringify(this);
     }
 };
 
-RoadItem().prototype = {
+RoadItem.prototype = {
     toString: function() {
         return JSON.stringify(this);
     }
 };
 
-TransactionItem().prototype = {
+TransactionItem.prototype = {
     toString: function() {
         return JSON.stringify(this);
     }
 };
 
-LuckyNumItem().prototype = {
+LuckyNumItem.prototype = {
     toString: function() {
         return JSON.stringify(this);
     }
@@ -168,7 +173,7 @@ var TerritoryService = function() {
     // userID => all products of user
     LocalContractStorage.defineMapProperty(this, "productRepo", {
         parse: function(text) {
-            return new productItem(text);
+            return new ProductItem(text);
         },
         stringify: function(o) {
             return JSON.stringify(o);
@@ -178,7 +183,7 @@ var TerritoryService = function() {
     // userID => all buildings of user
     LocalContractStorage.defineMapProperty(this, "buildingRepo", {
         parse: function(text) {
-            return new buildingItem(text);
+            return new BuildingItem(text);
         },
         stringify: function(o) {
             return JSON.stringify(o);
@@ -188,7 +193,7 @@ var TerritoryService = function() {
     // userID => all roads of user
     LocalContractStorage.defineMapProperty(this, "roadRepo", {
         parse: function(text) {
-            return new roadItem(text);
+            return new RoadItem(text);
         },
         stringify: function(o) {
             return JSON.stringify(o);
@@ -207,7 +212,7 @@ var TerritoryService = function() {
 
     LocalContractStorage.defineMapProperty(this, "luckyNumRepo", {
         parse: function(text) {
-            return new luckyNum(text);
+            return new LuckyNumItem(text);
         },
         stringify: function(o) {
             return JSON.stringify(o);
@@ -232,6 +237,51 @@ TerritoryService.prototype = {
         this.luckyNumRepo.set('luckyNumList', []); //幸运数字列表
 
         // TODO: board
+    },
+
+    getProduct: function(productType, productNum) {
+        var from = Blockchain.transaction.from;
+        var index = this.data.get('productID');
+
+        console.warn(index);
+
+        var productlist = this.data.get('allProductList');
+        var flag = 1;
+        for (var item in productlist) {
+            if (item.productName == productType && item.owner == from) {
+                item.numOfProduct += productNum;
+                flag = 0;
+            }
+        }
+        if (flag == 1) {
+            var product = new ProductItem();
+            product.productID = index;
+            product.productName = productType;
+            product.numOfProduct = productNum;
+            product.owner = from;
+
+            this.data.set('productID', index + 1);
+            productlist.push(product);
+            this.data.set('allProductList', productlist);
+        }
+    },
+
+    createHexagon: function(hasLuckyNumber, productType, posX, posY) {
+        var index = this.data.get('hexagonID');
+
+        console.warn(index);
+
+        var hexagon = new hexagonItem();
+        hexagon.hexagonID = index;
+        hexagon.hasLuckyNumber = hasLuckyNumber;
+        hexagon.posX = posX;
+        hexagon.posY = posY;
+
+        this.data.set('hexagonID', index + 1);
+
+        var hexagonlist = this.data.get('hexagonList');
+        hexagonlist.push(hexagon);
+        this.data.set('hexagonList', hexagonlist);
     },
 
     createBuilding: function(type, posX, posY, relPos, isFree) {
@@ -262,9 +312,9 @@ TerritoryService.prototype = {
         this.data.set('allBuildingList', allBuildings); //更新所有的建筑
 
         //减少资源
-        if (isFree == false) {
+        if (isFree == 0) {
             var productOfUser = this.productRepo.get(from) || [];
-            for (const item in productOfUser) {
+            for (var item in productOfUser) {
                 switch (item.productName) {
                     case "木头":
                         item.numOfProduct -= 4;
@@ -315,7 +365,7 @@ TerritoryService.prototype = {
         var from = Blockchain.transaction.from;
         //减少资源
         var productOfUser = this.productRepo.get(from) || [];
-        for (const item in productOfUser) {
+        for (var item in productOfUser) {
             switch (item.productName) {
                 case "粮食":
                     item.numOfProduct -= 13;
@@ -360,7 +410,7 @@ TerritoryService.prototype = {
 
         //减少资源
         var productOfUser = this.productRepo.get(from) || [];
-        for (const item in productOfUser) {
+        for (var item in productOfUser) {
             switch (item.productName) {
                 case "木头":
                     item.numOfProduct -= 6;
@@ -756,4 +806,4 @@ TerritoryService.prototype = {
 
 };
 
-module.exports = TerritoryService
+module.exports = TerritoryService;
