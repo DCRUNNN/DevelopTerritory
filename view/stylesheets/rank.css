@@ -68,6 +68,26 @@ p{
 	margin: 5px 10px;
 }
 
-li{
-	border-bottom: 1px #ddd solid; 
+#rank {
+    width: 100%;
+}
+
+
+#rank th{
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    padding: 2px 20px;
+}
+
+#rank td{
+	border-top: 1px #eee solid; 
+	text-align: center;
+    height: 30px;
+    line-height: 30px;
+    padding: 2px 20px;
+}
+
+#rank .num{
+    font-weight: 600;
 }
