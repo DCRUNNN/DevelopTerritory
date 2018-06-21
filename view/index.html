@@ -13,7 +13,7 @@
      <link href="stylesheets/common.css" rel="stylesheet" />
   </head>
 
-  <body>
+  <body style = "overflow: hidden;"> 
     <nav id = "nav" class="navbar-default navbar-inverse" role="navigation">
         <div class="navbar-header">
             <div class = "title">
@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
 		    <ul class = "nav navbar-nav">
 		      <li  class = "choosen"><a href = "#"><img src = "images/map.png">地图</a></li>
-		      <li><a href = "userInfoDemo.html"><img src = "images/user.png">个人主页</a></li>
+		      <li><a href = "userInfoDemo.html"><img src = "images/brick.png">我的资源</a></li>
 		      <li><a href = "deal.html"><img src = "images/deal.png">交易所</a></li>
 		      <li><a href = "rankDemo.html"><img src = "images/medal.png">排行榜</a></li>
 		      <li><a href = "instruction.html"><img src = "images/infor.png">说明</a></li>
@@ -100,6 +100,33 @@
 	            <div class="modal-body"></div>
 	            <div class="modal-footer">
 	            	<button type="button" class="btn btn-primary">&nbsp;确定&nbsp;</button>
+	                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;关闭&nbsp;</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+
+	 <div class="modal fade" id="switchOp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">村庄操作</h4>
+	            </div>
+	            <div class="modal-body">
+	                <div class = 'row'>
+	                    <div class = 'priceHint col-xs-3'>出售该村庄：</div>
+	                    <div class = 'col-xs-3'><input id = "villagePrice" class = 'form-control' type = 'number' min = '0' value = '1'></div>
+	                    <div class = 'priceHint col-xs-2'>NAS</div>
+	                    <div class = "col-xs-offset-1 col-xs-3"><a class = "form-control btn btn-primary">确定售出</a></div>
+	                </div>
+	                <hr/>
+	                <div class = 'row'>
+	                    <div class = "col-xs-9">扩建为城市： 花费13单位粮食、6单位砖块、10单位矿石</div>
+	                    <div class = "col-xs-3"><a class = "form-control btn btn-primary">确定扩建</a></div>
+	                </div>
+	            </div>
+	             <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;关闭&nbsp;</button>
 	            </div>
 	        </div><!-- /.modal-content -->

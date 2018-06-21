@@ -9,6 +9,7 @@ p{
 .container{
     padding-top: 15px;
     height: 100%;
+    text-align: center;
 }
 
 #villageBuilding,
@@ -22,54 +23,15 @@ p{
     width: 80%;
 }
 
-.btn-pic{
-  background-color: rgb(227, 229, 233);
-  border: solid rgb(237, 237, 249) 3px;
-  outline: 0;
-  width: 100%;
-  padding: 12%;
-  text-align: center;
-  font-size: 14px;
-  color: #555;
-  margin: 15px 0;
-}
-
-.btn-pic:hover,
-#villageBuilding:hover,
-#cityBuilding:hover{
-  border-color: #DDD;
-  color: #666;
-}
-
 #villageBuilding img{
     padding-top : 27%;
 }
 
-.btn-pic img {
-  height: 40px;
-  vertical-align: bottom;
-  display: block;
-  margin: 30px auto;
-}
-
-.btn-pic:hover img,
-.btn-pic:hover p{
-	filter:drop-shadow(5px 5px 5px white);
-}
-
-#rank h4{
-	text-align: center;
-
-}
-
-#rank h4 img{
-	height: 30px;
-	padding-bottom: 5px;
-	margin: 5px 10px;
-}
-
-#rank {
+#rankTable {
+	display: inline-block;
     width: 100%;
+    max-height: 450px;
+    overflow-y: scroll;
 }
 
 
@@ -82,6 +44,7 @@ p{
 
 #rank td{
 	border-top: 1px #eee solid; 
+	width: 35%;
 	text-align: center;
     height: 30px;
     line-height: 30px;
@@ -90,4 +53,5 @@ p{
 
 #rank .num{
     font-weight: 600;
+    width: 29%;
 }

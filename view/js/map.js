@@ -36,19 +36,19 @@ $(window).on('load', function(){
     offsetX = 20;
     offsetY = 10;
     maps = new Array(6);
-    //显示数字，序号1~6（0代表无六边形），横位置，纵位置, 左上路径（0无，1可建筑，2已有），左上角建筑（0无，1占位，2乡村，3城市 ），上路径，右上建筑，右上路径
-    posSet = ([{"mapInfor":[17, 5, 0, 0, 1, 1, 0, 1, 0], "owner":["小可爱", "小仙女", "#", "哈哈哈", "#"]},
-               {"mapInfor":[16, 5,-1,-1, 1, 1, 0, 1, 0], "owner" : ["小可爱",  "小仙女",  "哈哈哈","哈哈哈",  "#"]},
-               {"mapInfor":[12, 2,-1, 0, 1, 1, 2, 2, 2],"owner":["小可爱",  "小仙女",  "哈哈哈","哈哈哈",  "小仙女"]}, 
-               {"mapInfor":[1, 0, 0,-1, 0, 0, 0, 0, 0], "owner" : ["#",  "#", "#", "#", "#"]},
-               {"mapInfor":[2, 0, 1,-1, 1, 0, 0, 0, 0], "owner":["#",  "#", "#", "#", "#"]}, 
-               {"mapInfor":[3, 0, 1, 0, 1, 1, 0, 0, 0], "owner" : ["#",  "#", "#", "#", "#"]},
-               {"mapInfor":[4, 0, 0, 1, 0, 1, 2, 3, 1], "owner":["#",  "#", "小可爱", "哈哈哈", "#"]}, 
-               {"mapInfor":[5, 0,-1, 1, 0, 1, 0, 1, 0], "owner" : ["#",  "小仙女", "#", "#", "#"]},
-               {"mapInfor":[6, 0,-2, 1, 0, 0, 1, 2, 1], "owner":["#",  "#", "#", "哈哈哈", "#"]},
-               {"mapInfor":[7, 0,-2, 0, 0, 0, 1, 2, 1], "owner" : ["#",  "#", "#", "哈哈哈", "#"]},         
-               {"mapInfor":[8, 0,-2,-1, 0, 0, 0, 0, 1], "owner":["#", "#", "#", "#", "#"]}, 
-               {"mapInfor":[9, 0,-1,-2, 0, 0, 0, 0, 1], "owner" : ["#", "#", "#", "#", "#"]}]);
+    //显示数字，序号1~6（0代表无六边形），横位置，纵位置, 左上路径（0无，1可建筑，2已有），左上角建筑（0无，1占位，2乡村，3城市,-2为出售中乡村），上路径，右上建筑，右上路径
+    posSet = ([{"mapInfor":[17, 5, 0, 0, 1, 1, 0, 1, 0], "owner":["小可爱", "小仙女", "#", "哈哈哈", "#"], "price" : [-1 ,-1, -1, -1, -1]},
+               {"mapInfor":[16, 5,-1,-1, 1, 1, 0, 1, 0], "owner" : ["小可爱",  "小仙女",  "哈哈哈","哈哈哈",  "#"], "price" :  [-1 ,-1, -1, -1, -1]},
+               {"mapInfor":[12, 2,-1, 0, 1, 2, 2, 2, 2],"owner":["小可爱",  "小仙女",  "哈哈哈","哈哈哈",  "小仙女"], "price" :  [-1 ,-1, -1, -1, -1]}, 
+               {"mapInfor":[1, 0, 0,-1, 0, 0, 0, 0, 0], "owner" : ["#",  "#", "#", "#", "#"], "price" : [-1 ,-1, -1, -1, -1]},
+               {"mapInfor":[2, 0, 1,-1, 1, 0, 0, 0, 0], "owner":["#",  "#", "#", "#", "#"], "price" : [-1 ,-1, -1, -1, -1]}, 
+               {"mapInfor":[3, 0, 1, 0, 1, 1, 0, 0, 0], "owner" : ["#",  "#", "#", "#", "#"], "price" : [-1 ,3, 34, 3, 213]},
+               {"mapInfor":[4, 0, 0, 1, 0, 1, 2, 3, 1], "owner":["#",  "#", "小可爱", "哈哈哈", "#"], "price" : [-1 ,3, 34, 3, 213]}, 
+               {"mapInfor":[5, 0,-1, 1, 0, 1, 0, 1, 0], "owner" : ["#",  "小仙女", "#", "#", "#"], "price" : [-1 ,3, 34, 3, 213]},
+               {"mapInfor":[6, 0,-2, 1, 0, 0, 1, 2, 1], "owner":["#",  "#", "#", "哈哈哈", "#"], "price" : [-1 ,3, 34, 3, 213]},
+               {"mapInfor":[7, 0,-2, 0, 0, 0, 1, 2, 1], "owner" : ["#",  "#", "#", "哈哈哈", "#"], "price" : [-1 ,3, 34, 3, 213]},         
+               {"mapInfor":[8, 0,-2,-1, 0, 0, 0, 0, 1], "owner":["#", "#", "#", "#", "#"], "price" : [-1 ,3, 34, 3, 213]}, 
+               {"mapInfor":[9, 0,-1,-2, 0, 0, 0, 0, 1], "owner" : ["#", "#", "#", "#", "#"], "price" : [-1 ,3, 34, 3, 213]}]);
     for (var i = 0; i < 6; i++){
     	maps[i] = new Image();
     }
@@ -314,7 +314,8 @@ function handDrag(){
     }, false)
 }
 
-function circleMask(x, y, structType, index){
+function circleMask(x, y, structPos, index){
+	var structType = posSet[index].mapInfor[structPos * 2 + 5];
 	var circle = svgContainer.append("circle")
 		.attr("cx",x + oriX + 10 * scale)
 		.attr("cy", y + oriY + 10 * scale)
@@ -322,14 +323,16 @@ function circleMask(x, y, structType, index){
 		.style("fill", "rgba(255, 255, 255, 0)")
 		.style("cursor", "pointer")
 		.attr("index", index)
+		.attr("structPos", structPos)
 		.attr("structType", structType)
-		.attr("owner", posSet[index].owner[1 + structType*2]);
-	if(circle.attr("owner") != id && circle.attr("owner") != "#")circle.style("fill","rgba(67, 58, 20, 0.2)");
+		.attr("owner", posSet[index].owner[1 + structPos*2])
+		.attr("price", posSet[index].price[1 + structPos*2]);
+	if(circle.attr("owner") != id && circle.attr("owner") != "#" && circle.attr("price") == -1)circle.style("fill","rgba(67, 58, 20, 0.2)");
 	circle.on("mouseover", function(){
 		if(typeof timer != "undefined")clearTimeout(timer);
 		var choosenCircle = d3.select(this);
 		timer = setTimeout(function(){
-			if(circle.attr("owner") != id && circle.attr("owner") != "#")
+			if(circle.attr("owner") != id && circle.attr("owner") != "#" && circle.attr("price") == -1)
 				choosenCircle.transition(200).style("fill", "rgba(67, 58, 20, 0.3)");
 			else
 			   	choosenCircle.transition(200).style("fill", "rgba(255, 255, 200, 0.2)");
@@ -340,18 +343,32 @@ function circleMask(x, y, structType, index){
 			    $("#infor").css("top", top + "px");
 			    $("#infor").css("left", left + "px");
                 
-                if(posSet[choosenCircle.attr("index")].mapInfor[choosenCircle.attr("structType")*2 + 5] == 2){
-				    if(choosenCircle.attr("owner") == id)
-				        $("#infor").text("我的村庄");
+                if(structType == 2){
+				    if(choosenCircle.attr("owner") == id){
+						if(choosenCircle.attr("price") != -1)
+							$("#infor").html("我的村庄正在出售中<br/>售价："+ choosenCircle.attr("price") + "NAS");
+						else
+						    $("#infor").text("我的村庄");
+					}
+					else if(choosenCircle.attr("price") != -1)
+						$("#infor").html(choosenCircle.attr("owner")+"的村庄正在出售中<br/>售价："+ choosenCircle.attr("price") + "NAS");
 					else
 					    $("#infor").text("村庄拥有者： "+ choosenCircle.attr("owner"));
 				}
-				else{
-                    if(choosenCircle.attr("owner") == id)
-				        $("#infor").text("我的城市");
+				else if(structType == 3){
+                     if(choosenCircle.attr("owner") == id){
+						if(choosenCircle.attr("price") != -1)
+							$("#infor").html("我的城市正在出售中<br/>售价："+ choosenCircle.attr("price") + "NAS");
+						else
+						    $("#infor").text("我的城市");
+					}
+					else if(choosenCircle.attr("price") != -1)
+						$("#infor").html(choosenCircle.attr("owner")+"的城市正在出售中<br/>售价："+ choosenCircle.attr("price") + "NAS");
 					else
 					    $("#infor").text("城市拥有者： "+ choosenCircle.attr("owner"));
 				}
+				else
+					return;
 				$("#infor").show();
 		    }
 		},100)
@@ -360,7 +377,7 @@ function circleMask(x, y, structType, index){
 	circle.on("mouseout", function(){
 		if(typeof timer != "undefined")clearTimeout(timer);
 		timer = setTimeout(function(){
-			if(circle.attr("owner") != id && circle.attr("owner") != "#")
+			if(circle.attr("owner") != id && circle.attr("owner") != "#"  && circle.attr("price") == -1)
 				circle.style("fill","rgba(67, 58, 20, 0.2)");
 			else
 			   circle.transition(300).style("fill", "rgba(255, 255, 255, 0)");
@@ -374,18 +391,60 @@ function circleMask(x, y, structType, index){
             mouseDrag(x,y);  
         })
 	})
-	circle.on("click", function(){
-		console.log("click");
-		//to do 
-		if(d3.select(this).attr("owner") != "#" && d3.select(this).attr("owner") != id)return;
-		if(posSet[d3.select(this).attr("index")].mapInfor[d3.select(this).attr("structType")*2 + 5] == 2)
-			$("#structCreate").find(".modal-body").text("你确定花费13单位粮食、6单位砖块、10单位矿石将此村庄扩建成城市吗？");
-		else if(posSet[d3.select(this).attr("index")].mapInfor[d3.select(this).attr("structType")*2 + 5] == 1)
-            $("#structCreate").find(".modal-body").text("你确定花费4单位木头、3单位砖块、9单位羊毛、6单位粮食在此地建设1个村庄吗？（前666位玩家可以免费建设2个村庄，剩余X/666）");
-		else
-			return;
-		$('#structCreate').modal('show');
-	})
+	if(structType == 1){
+		circle.on("click", function(){
+			console.log("click_circle");
+			//to do
+			$("#structCreate").find("h4").text("新建村庄");
+			$("#structCreate").find(".modal-body").text("你确定花费4单位木头、3单位砖块、9单位羊毛、6单位粮食在此地建设1个村庄吗？（前666位玩家可以免费建设2个村庄，剩余X/666）");
+			$('#structCreate').modal('show');
+		})
+	}
+	else if(structType == 2){
+		if (circle.attr("owner") != id && circle.attr("price") != -1){
+			circle.on("click", function(){
+				$("#structCreate").find("h4").text("村庄购买");
+				$("#structCreate").find(".modal-body").html("您确定花费<span class = 'price'>" + circle.attr("price") + "</span>NAS购买这个村庄吗？");
+				$('#structCreate').modal('show');
+			})
+		}
+		else if (circle.attr("owner") == id && circle.attr("price") != -1){
+			circle.on("click", function(){
+				$("#structCreate").find("h4").text("村庄出售");
+				$("#structCreate").find(".modal-body").html("您确定不再出售该村庄吗？");
+				$('#structCreate').modal('show');
+			})
+		}
+		else if (circle.attr("owner") == id && circle.attr("price") == -1){
+			circle.on("click", function(){
+				$('#switchOp').modal('show');
+			})
+		}
+	}
+	else if(structType == 3){
+		if (circle.attr("owner") != id && circle.attr("price") != -1){
+			circle.on("click", function(){
+				$("#structCreate").find("h4").text("城市购买");
+				$("#structCreate").find(".modal-body").html("您确定花费<span class = 'price'>" + circle.attr("price") + "</span>NAS购买这个城市吗？");
+				$('#structCreate').modal('show');
+			})
+		}
+		else if (circle.attr("owner") == id && circle.attr("price") != -1){
+			circle.on("click", function(){
+				$("#structCreate").find("h4").text("城市出售");
+				$("#structCreate").find(".modal-body").html("您确定不再出售该城市吗？");
+				$('#structCreate').modal('show');
+			})
+		}
+		else if (circle.attr("owner") == id && circle.attr("price") == -1){
+			circle.on("click", function(){
+				$("#structCreate").find("h4").text("城市出售");
+				$("#structCreate").find(".modal-body").html("<div class = 'row'><div class = 'priceHint col-xs-7'>您将以___NAS/单位的价格出售该城市:</div><div class = 'col-xs-3'><input class = 'form-control' type = 'number' min = '0' value = '1'></div></div>");
+				$('#structCreate').modal('show');
+			})
+		}
+	}
+
 }
 
 function lineMask(x, y, width, height, angle, lineType, index){
@@ -401,16 +460,17 @@ function lineMask(x, y, width, height, angle, lineType, index){
 		.style("cursor", "pointer")
 		.attr("index", index)
 		.attr("pos", angle / 60)
-		.attr("owner", posSet[index].owner[2 + angle/60]);
+		.attr("owner", posSet[index].owner[2 + 2 * angle/60])
+		.attr("price", posSet[index].price[2 + 2 * angle/60]);
 
-	if(lineType == 2 && line.attr("owner") != id)line.style("fill","url(#lightRoad)");
+	if(lineType == 2 && line.attr("owner") != id && line.attr("price") == -1)line.style("fill","url(#lightRoad)");
 	if(lineType){
 		line.on("mouseover", function(){
 			if(typeof timer != "undefined")clearTimeout(timer);
 			var choosenLine = d3.select(this);
 			timer = setTimeout(function(){
 				if(lineType == 2){
-					if(choosenLine.attr("owner") != id)
+					if(choosenLine.attr("owner") != id && line.attr("price") == -1)
 				        choosenLine.transition(200).style("fill", "url(#darkRoad)");
 				    else
 				    	choosenLine.transition(200).style("fill", "rgba(255, 255, 200, 0.08)");
@@ -419,8 +479,14 @@ function lineMask(x, y, width, height, angle, lineType, index){
 					var left =  parseInt(choosenLine.attr("x"));
 					$("#infor").css("top", top + "px");
 					$("#infor").css("left", left + "px");
-					if(choosenLine.attr("owner") == id)
-						 $("#infor").text("我的道路");
+					if(choosenLine.attr("owner") == id){
+						if(choosenLine.attr("price") != -1)
+							$("#infor").html("我的道路正在出售中<br/>售价："+ choosenLine.attr("price") + "NAS");
+						else
+						    $("#infor").text("我的道路");
+					}
+					else if(choosenLine.attr("price") != -1)
+						$("#infor").html(choosenLine.attr("owner")+"的道路正在出售中<br/>售价："+ choosenLine.attr("price") + "NAS");
 					else
 					    $("#infor").text("道路拥有者： "+ choosenLine.attr("owner"));
 					$("#infor").show();
@@ -433,7 +499,7 @@ function lineMask(x, y, width, height, angle, lineType, index){
 	}
 	line.on("mouseout", function(){
 		if(typeof timer != "undefined")clearTimeout(timer);
-		if(lineType == 2 && line.attr("owner") != id)
+		if(lineType == 2 && line.attr("owner") != id && line.attr("price") == -1)
 			line.style("fill","url(#lightRoad)");
 		else
 			line.transition(200).style("fill", "rgba(255, 255, 200, 0)");
@@ -449,7 +515,29 @@ function lineMask(x, y, width, height, angle, lineType, index){
 		line.on("click", function(){
 			console.log("click_line");
 			//to do
-			$("#structCreate").find(".modal-body").text("你确定花费6单位木头、6单位砖块在此地建设1条道路吗？");
+			$("#structCreate").find("h4").text("新建道路");
+			$("#structCreate").find(".modal-body").text("您确定花费6单位木头、6单位砖块在此地建设1条道路吗？");
+			$('#structCreate').modal('show');
+		})
+	}
+	else if (lineType == 2 && line.attr("owner") != id && line.attr("price") != -1){
+		line.on("click", function(){
+			$("#structCreate").find("h4").text("道路购买");
+			$("#structCreate").find(".modal-body").html("您确定花费<span class = 'price'>" + line.attr("price") + "</span>NAS购买这条道路吗？");
+			$('#structCreate').modal('show');
+		})
+	}
+	else if (lineType == 2 && line.attr("owner") == id && line.attr("price") != -1){
+		line.on("click", function(){
+			$("#structCreate").find("h4").text("道路出售");
+			$("#structCreate").find(".modal-body").html("您确定不再出售该道路吗？");
+			$('#structCreate').modal('show');
+		})
+	}
+	else if (lineType == 2 && line.attr("owner") == id && line.attr("price") == -1){
+		line.on("click", function(){
+			$("#structCreate").find("h4").text("道路出售");
+			$("#structCreate").find(".modal-body").html("<div class = 'row'><div class = 'priceHint col-xs-7'>您将以___NAS/单位的价格出售该道路:</div><div class = 'col-xs-3'><input class = 'form-control' type = 'number' min = '0' value = '1'></div></div>")
 			$('#structCreate').modal('show');
 		})
 	}

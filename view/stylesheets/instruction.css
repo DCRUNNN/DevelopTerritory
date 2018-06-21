@@ -1,0 +1,34 @@
+.resourceCard img{
+    height: 100px;
+    max-width: 90%;
+}
+
+.btn-pic{
+	padding: 5%;
+}
+
+p img,
+.resourceCard p img{
+	height: 25px;
+	padding: 0 3px;
+	display: inline;
+	margin: 0;
+}
+
+p img.fat{
+    height: 15px;
+}
+
+.resourceCard p img{
+	height: 20px;
+	padding-right: 0;
+	padding-left: 4px;
+}
+
+.resourceCard .stress{
+	font-size: 1.2em;
+}
+
+.stress{
+	font-weight: 600;
+}

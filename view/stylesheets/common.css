@@ -9,7 +9,6 @@ body{
     color: #333;
     font-family: "微软雅黑";
     font-size: 1.6rem;
-    overflow: hidden;
 }
 
 ul{
@@ -217,18 +216,94 @@ a, a:link, a:visited, a:hover, a:active{
 
 #infor{
 	position: absolute;
-	line-height: 30px;
-	padding: 5px 20px 5px 10px;
+	line-height: 20px;
+	padding: 8px 20px 8px 10px;
 	font-size: 1.3rem;
 	font-color: #666;
-	background-color: rgb(237, 239, 243, 0.8);
+	background-color: rgb(237, 239, 243);
+	filter:alpha(opacity=80);
+	opacity:0.8;
 	border: 1px solid rgba(200, 200, 200, 0.5);
 	box-shadow: 2px 2px 2px rgba(100, 100, 100, 0.3);
 }
 
+.modal-body .price{
+	color: #222;
+	font-weight: 600;
+	padding: 0 5px;
+}
+
+.modal-body{
+	line-height: 35px;
+}
+
+
+.modal h4{
+	text-align: center;
+	font-size: 2.0rem;
+
+}
+
+.modal h4 img{
+	height: 30px;
+	padding-bottom: 5px;
+	margin: 5px 10px;
+}
+
+.btn-pic img {
+  height: 40px;
+  vertical-align: bottom;
+  display: block;
+  margin: 30px auto;
+}
+
+.btn-pic{
+  background-color: rgb(227, 229, 233);
+  border: solid rgb(237, 237, 249) 3px;
+  outline: 0;
+  width: 100%;
+  padding: 12%;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin: 15px 0;
+}
+
+.btn-pic:hover,
+#villageBuilding:hover,
+#cityBuilding:hover{
+  border-color: #DDD;
+  color: #666;
+}
+
+.btn-pic:hover img,
+.btn-pic:hover p{
+	filter:drop-shadow(3px 3px 5px white);
+}
+
+.numLabel{
+	margin-top: 10px;
+	font-size: 12px;
+}
+
+.btn-pic>.btn{
+    font-size: 12px;
+    color: white;
+    background-color: #555;
+    padding: 0;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 10px;
+}
+
+.btn-pic>.btn:active{
+	background-color: #333;
+	color: white;
+}
+
 .footer{
 	text-align: center;
-	padding-top: 15px;
+	padding: 15px;
 	color: grey;
 	font-size: 1.3rem;
 	opacity: 0.8;

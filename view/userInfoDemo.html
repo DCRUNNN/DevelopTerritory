@@ -1,103 +1,257 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-    <title>开疆拓土-个人主页</title>
-    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" media="screen" />
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+	    <title>开疆拓土-我的资源</title>
+	    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" media="screen" />
+	    <!-- Bootstrap core CSS -->
+	    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 
-    <!-- Custom CSS-->
-    <link href="stylesheets/common.css" rel="stylesheet" />
-    <link href="stylesheets/rank.css" rel="stylesheet" />
- </head>
+	    <!-- Custom CSS-->
+	    <link href="stylesheets/common.css" rel="stylesheet" />
+	    <link href="stylesheets/rank.css" rel="stylesheet" />
+	    <link href="stylesheets/deal.css" rel="stylesheet" />
+	 </head>
 
-<body>
- <nav id = "nav" class="navbar-default navbar-inverse" role="navigation">
-        <div class="navbar-header">
-            <div class = "title">
-                <img class = "logo" src = "images/w_logo.png">
-                <img class = "w_logo" src = "images/title.png">
-            </div>
-            <button type="button" class="navbar-toggle nav-content navbar-right" data-toggle="collapse" data-target="#navbar-collapse">
-                <span class="sr-only">切换导航</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
-		    <ul class = "nav navbar-nav">
-		      <li><a href = "index.html"><img src = "images/map.png">地图</a></li>
-		      <li class = "choosen"><a href = "#"><img src = "images/user.png">个人主页</a></li>
-		      <li><a href = "deal.html"><img src = "images/deal.png">交易所</a></li>
-		      <li><a href = "rankDemo.html"><img src = "images/medal.png">排行榜</a></li>
-		      <li><a href = "instruction.html"><img src = "images/infor.png">说明</a></li>
-		    </ul>
-		    <ul class = "nav navbar-nav navbar-right">
-		      <li><a href = "https://blog.nebulas.io/2018/04/12/creating-a-nas-wallet/"><img src = "images/money.png">钱包插件</a></li>
-		    </ul>
-        </div>
-    </nav>
+    <body>
+	    <nav id = "nav" class="navbar-default navbar-inverse" role="navigation">
+	        <div class="navbar-header">
+	            <div class = "title">
+	                <img class = "logo" src = "images/w_logo.png">
+	                <img class = "w_logo" src = "images/title.png">
+	            </div>
+	            <button type="button" class="navbar-toggle nav-content navbar-right" data-toggle="collapse" data-target="#navbar-collapse">
+	                <span class="sr-only">切换导航</span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	        </div>
+	        <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
+			    <ul class = "nav navbar-nav">
+			      <li><a href = "index.html"><img src = "images/map.png">地图</a></li>
+			      <li class = "choosen"><a href = "#"><img src = "images/brick.png">我的资源</a></li>
+			      <li><a href = "deal.html"><img src = "images/deal.png">交易所</a></li>
+			      <li><a href = "rankDemo.html"><img src = "images/medal.png">排行榜</a></li>
+			      <li><a href = "instruction.html"><img src = "images/infor.png">说明</a></li>
+			    </ul>
+			    <ul class = "nav navbar-nav navbar-right">
+			      <li><a href = "https://blog.nebulas.io/2018/04/12/creating-a-nas-wallet/"><img src = "images/money.png">钱包插件</a></li>
+			    </ul>
+	        </div>
+	    </nav>
 
-    <div div="container">
-        
-    </div>
-    <div class = "footer">
-        <a href = "#">@Copyright 2018</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href = "#">联系我们: wechat this_songjian</a> 
-    </div>
-</body>
+         <div class = "container">
+             <p>&nbsp;</p>
+	        <h1>我的资源</h1>
+	        <p>&nbsp;</p>
+			<div class = "row">
+			    <div class = "col-xs-offset-1 col-sm-2 col-xs-5">
+			        <div class="btn-pic" id="woodProduct">
+			            <img src = "images/resources/木头.png">
+			            <p>- 木头 -</p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <a class = "btn btn-default form-control" onclick="sellResource(0)">出售</a>
+			        </div>
+			    </div>
+			    <div class = "col-sm-2 col-xs-5">
+			        <div class="btn-pic"  id="brickProduct">
+			            <img src = "images/resources/砖头.png">
+			            <p>- 砖块 -</p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <a class = "btn btn-default form-control" onclick="sellResource(1)">出售</a>
+			        </div>
+			    </div>
+			    <div class = "col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
+			        <div class="btn-pic" id="woolProduct">
+			            <img src = "images/resources/羊毛.png">
+			            <p>- 羊毛 -</p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <a class = "btn btn-default form-control" onclick="sellResource(2)">出售</a>
+			        </div>
+			    </div>
+			    <div class = "col-sm-2 col-xs-5">
+			        <div class="btn-pic" id="foodProduct">
+			            <img src = "images/resources/粮食.png">
+			            <p>- 粮食 -</p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <a class = "btn btn-default form-control" onclick="sellResource(3)">出售</a>
+			        </div>
+			    </div>
+			    <div class = "col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
+			        <div class="btn-pic" id="mineralProduct"">
+			            <img src = "images/resources/矿石.png">
+			            <p>- 矿石 -</p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <a class = "btn btn-default form-control" onclick="sellResource(4)">出售</a>
+			        </div>
+			    </div>
+			</div>
+
+			<h2>出售中</h2>
+			<div class = "row" id = "selling">
+			</div>
+
+			<h2>已售出</h2>
+			<div class = "row" id = "sold">
+			</div>
+
+	    </div>
+
+	    <div class = "footer">
+	        <a href = "#">@Copyright 2018</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href = "#">联系我们: wechat this_songjian</a> 
+	    </div>
+
+	    <div class="modal fade" id="sellWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                <h4 class="modal-title" id="myModalLabel"><img src = "images/dark/brick.png">售出资源</h4>
+		            </div>
+		            <div class="modal-body">
+		                <div class = "row">
+		                    <div class = "priceHint col-xs-7">您将以___NAS/单位的价格出售<span class = "resourceName"></span>:</div>
+		                    <div class = "col-xs-3"><input class = "form-control" type = "number" min = "0" value = "1"></div>
+		                </div>
+		                <div class = "row">
+		                    <div class = "col-xs-7">出售<span class = "resourceName"></span>单位数目为：</div><div class = "col-xs-3"><input class = "form-control" type = "number" min = "1" value = "1"></div>
+		                </div>
+		            </div>
+		            
+		            <div class="modal-footer">
+		            	<button type="button" class="btn btn-primary">&nbsp;确定&nbsp;</button>
+		                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;关闭&nbsp;</button>
+	                </div>
+		        </div><!-- /.modal-content -->
+		    </div><!-- /.modal -->
+		</div>
+    
+        <script src="../dist/js/jquery-3.3.1.min.js"></script>
+		<script src="../dist/js/jquery.fullPage.js"></script>
+		<script src="../dist/js/nebulas/nebPay.js"></script>
+		<script src="../dist/js/nebulas/nebulas.js"></script>
+
+		<script src="../resources/bootstrap/js/bootstrap.js"></script>
 
 
-<script src="../dist/js/jquery-3.3.1.min.js"></script>
-<script src="../dist/js/jquery.fullPage.js"></script>
-<script src="../dist/js/nebulas/nebPay.js"></script>
-<script src="../dist/js/nebulas/nebulas.js"></script>
+	    <script>
 
-<script src="../resources/bootstrap/js/bootstrap.js"></script>
+	        var product = ["木头", "砖块", "羊毛", "粮食", "矿石"];
+
+	        var rscNum = [10, 234, 34, 324, 23];
+
+	        var selling = ([{"rscType": 0, "price": 23, "number" : 50}, {"rscType": 0, "price": 24, "number" : 50}, {"rscType": 0, "price": 25, "number" : 50}, {"rscType": 0, "price": 26, "number" : 50}, {"rscType": 0, "price": 23, "number" : 50}, {"rscType": 0, "price": 24, "number" : 50}, {"rscType": 0, "price": 25, "number" : 50}, {"rscType": 0, "price": 26, "number" : 50}]);
+
+	        var sold = ([{"rscType": 0, "price": 23, "number" : 50}, {"rscType": 0, "price": 24, "number" : 50}, {"rscType": 0, "price": 25, "number" : 50}, {"rscType": 0, "price": 26, "number" : 50}]);
+
+	        $(window).on('load', function(){
+	        	var i = 0;
+                $(".rscNum").each(function(){
+                	$(this).text(rscNum[i++]);
+                })
 
 
-<script>
-    function checkID() {
-        window.postMessage({
-            "target": "contentscript",
-            "data": {},
-            "method": "getAccount",
-        }, "*");
-        window.addEventListener('message', function (e) {
-            if (e.data && e.data.data) {
-                if (e.data.data.account) {//这就是当前钱包中的地址
-                    var account = e.data.data.account;
-                }
-            }
-        });
-    }
-</script>
+	        	loadSelling();
+	        	loadSold();
+	        })
 
-<script>
+	        function loadSelling(){
+	        	if (selling.length >= 1)
+	        		for(var i = 0; i < selling.length; i++){
+	        		var sailInfo = "<div class='btn-pic'><img src = 'images/resources/" + product[selling[i].rscType] + ".png'><p>- " +product[selling[i].rscType]+ " -</p><p class = 'numLabel'>出售数量: <span>" + selling[i].number + " 单位</span></p><p class = 'numLabel'>出售价格: <span>" + selling[i].price + " NAS</span></p><a class = 'btn btn-default form-control' onclick='deleteSelling(" + i + ")'>删除</a></div>";
+	        		var rscDiv = $("<div class = 'col-sm-2 col-xs-5'></div>");
+	        		if(i % 5 == 0 && i % 2 == 0)
+	        			$(rscDiv).addClass("col-xs-offset-1");
+	        		else if(i % 5 == 0 )
+	        			$(rscDiv).addClass("col-sm-offset-1 col-xs-offset-0");
+	        		else if(i % 2 == 0)
+	        			$(rscDiv).addClass("col-sm-offset-0 col-xs-offset-1");
+	        	    $(rscDiv).append(sailInfo);
+	        	    $("#selling").append(rscDiv);
+	            }
+	            else{
+                    $("#selling").html("<p>&nbsp</p><p>- 暂无记录 -</p><p>&nbsp</p>")
+	            }
+	        }
 
-    "use strict";
+	         function loadSold(){
+	         	if (sold.length >= 1)
+		        	for(var i = 0; i < sold.length; i++){
+		        		var soldInfo = "<div class='btn-pic'><img src = 'images/resources/" + product[sold[i].rscType] + ".png'><p>- " +product[sold[i].rscType]+ " -</p><p class = 'numLabel'>出售数量: <span>" + sold[i].number + " 单位</span></p><p class = 'numLabel'>出售价格: <span>" + sold[i].price + " NAS</span></p></div>";
+		        		var rscDiv = $("<div class = 'col-sm-2 col-xs-5'></div>");
+		        		if(i % 5 == 0 && i % 2 == 0)
+		        			$(rscDiv).addClass("col-xs-offset-1");
+		        		else if(i % 5 == 0 )
+		        			$(rscDiv).addClass("col-sm-offset-1 col-xs-offset-0");
+		        		else if(i % 2 == 0)
+		        			$(rscDiv).addClass("col-sm-offset-0 col-xs-offset-1");
+		        	    $(rscDiv).append(soldInfo);
+		        	    $("#sold").append(rscDiv);
+		            }
+		         else{
+                    $("#sold").html("<p>&nbsp</p><p>- 暂无记录 -</p><p>&nbsp</p>")
+	            }
+	        }
 
-    var dappContactAddress = "n1gWbChQ3qq6sLc1V6Cn5Vwy65RnB5nU8cp";
-    var nebulas = require("nebulas"),
-        Account = nebulas.Account,
-        neb = new nebulas.Neb();
-    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+	        function deleteSelling(id){
+                selling.splice(id, 1);
+                $("#selling").empty();
+                loadSelling();
+	        }
 
-    // NebPay SDK 为不同平台的交易提供了统一的支付接口
-    // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
-    var NebPay = require("nebpay");
-    var nebPay = new NebPay();
+	        function sellResource(id){
+	        	$("#sellWindow").find(".price").text(20);
+	        	$("#sellWindow").find(".resourceName").text(product[id]);
+                $("#sellWindow").modal('show');
+	        }
 
-    // 执行合约返回的交易流水号，用于查询交易信息
-    var serialNumber;
 
-</script>
+	    </script>
 
-<script src="../resources/vue/vue.js"></script>
-<script src="../resources/vue-resource/vue-resource.js"></script>
-<script src="../dist/js/pages/userInfoDemo.js"></script>
+	    <script>
+		    function checkID() {
+		        window.postMessage({
+		            "target": "contentscript",
+		            "data": {},
+		            "method": "getAccount",
+		        }, "*");
+		        window.addEventListener('message', function (e) {
+		            if (e.data && e.data.data) {
+		                if (e.data.data.account) {//这就是当前钱包中的地址
+		                    var account = e.data.data.account;
+		                }
+		            }
+		        });
+		    }
+		</script>
+
+		<script>
+
+		    "use strict";
+
+		    var dappContactAddress = "n1gWbChQ3qq6sLc1V6Cn5Vwy65RnB5nU8cp";
+		    var nebulas = require("nebulas"),
+		        Account = nebulas.Account,
+		        neb = new nebulas.Neb();
+		    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+
+		    // NebPay SDK 为不同平台的交易提供了统一的支付接口
+		    // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
+		    var NebPay = require("nebpay");
+		    var nebPay = new NebPay();
+
+		    // 执行合约返回的交易流水号，用于查询交易信息
+		    var serialNumber;
+
+		</script>
+
+		<script src="../resources/vue/vue.js"></script>
+		<script src="../resources/vue-resource/vue-resource.js"></script>
+		<script src="../dist/js/pages/userInfoDemo.js"></script>
+
+    </body>
 
 </html>

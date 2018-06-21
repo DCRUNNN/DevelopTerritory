@@ -1,0 +1,19 @@
+#buy .number,
+#buy .total{
+	color: #222;
+	font-weight: 600;
+	padding: 0 5px;
+}
+
+#buy .modal-body,
+#sellWindow .modal-body{
+	padding-left: 40px;
+	padding-right: 40px;
+	line-height: 34px;
+	text-align: left;
+}
+
+#buy .priceHint,
+#sellWindow .priceHint{
+	padding-bottom: 20px;
+}
