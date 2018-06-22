@@ -52,7 +52,7 @@
 			        <div class="btn-pic" id="woodProduct">
 			            <img src = "images/resources/木头.png">
 			            <p>- 木头 -</p>
-			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">{{woodProduct.numOfProduct}}</span></p>
 			            <a class = "btn btn-default form-control" onclick="sellResource(0)">出售</a>
 			        </div>
 			    </div>
@@ -60,7 +60,7 @@
 			        <div class="btn-pic"  id="brickProduct">
 			            <img src = "images/resources/砖头.png">
 			            <p>- 砖块 -</p>
-			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">{{brickProduct.numOfProduct}}</span></p>
 			            <a class = "btn btn-default form-control" onclick="sellResource(1)">出售</a>
 			        </div>
 			    </div>
@@ -68,7 +68,7 @@
 			        <div class="btn-pic" id="woolProduct">
 			            <img src = "images/resources/羊毛.png">
 			            <p>- 羊毛 -</p>
-			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">{{woolProduct.numOfProduct}}</span></p>
 			            <a class = "btn btn-default form-control" onclick="sellResource(2)">出售</a>
 			        </div>
 			    </div>
@@ -76,15 +76,15 @@
 			        <div class="btn-pic" id="foodProduct">
 			            <img src = "images/resources/粮食.png">
 			            <p>- 粮食 -</p>
-			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">{{foodProduct.numOfProduct}}</span></p>
 			            <a class = "btn btn-default form-control" onclick="sellResource(3)">出售</a>
 			        </div>
 			    </div>
 			    <div class = "col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
-			        <div class="btn-pic" id="mineralProduct"">
+			        <div class="btn-pic" id="mineralProduct">
 			            <img src = "images/resources/矿石.png">
 			            <p>- 矿石 -</p>
-			            <p class = "numLabel">可出售数量: <span class = "rscNum">10</span></p>
+			            <p class = "numLabel">可出售数量: <span class = "rscNum">{{mineralProduct.numOfProduct}}</span></p>
 			            <a class = "btn btn-default form-control" onclick="sellResource(4)">出售</a>
 			        </div>
 			    </div>
@@ -130,15 +130,14 @@
 		</div>
     
         <script src="../dist/js/jquery-3.3.1.min.js"></script>
-		<script src="../dist/js/jquery.fullPage.js"></script>
+		<!--<script src="../dist/js/jquery.fullPage.js"></script>-->
 		<script src="../dist/js/nebulas/nebPay.js"></script>
 		<script src="../dist/js/nebulas/nebulas.js"></script>
 
 		<script src="../resources/bootstrap/js/bootstrap.js"></script>
 
-
+		
 	    <script>
-
 	        var product = ["木头", "砖块", "羊毛", "粮食", "矿石"];
 
 	        var rscNum = [10, 234, 34, 324, 23];

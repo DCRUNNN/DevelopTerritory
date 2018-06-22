@@ -264,6 +264,7 @@ TerritoryService.prototype = {
             productlist.push(product);
             this.data.set('allProductList', productlist);
         }
+        //这里flag = 0的时候没有this.data.set？？
     },
 
     createHexagon: function(hasLuckyNumber, productType, posX, posY) {
@@ -328,7 +329,7 @@ TerritoryService.prototype = {
                     case "粮食":
                         item.numOfProduct -= 6;
                         break;
-                        dafault: break;
+                    default: break;
                 }
             }
             this.productRepo.set(from, productOfUser);
