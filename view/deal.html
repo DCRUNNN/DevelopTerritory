@@ -104,11 +104,11 @@
 		                <h4 class="modal-title" id="myModalLabel"><img src = "images/dark/deal.png">购买资源</h4>
 		            </div>
 		            <div class="modal-body">
-		                <div class = "priceHint">您确定以<span class = "price"></span>NAS/单位的价格购买<span class = "number"></span>单位个<span class = "resourceName"></span>吗？</div><div>这将花费您共计<span class = "total"></span>NAS。</div>
+		                <div class = "priceHint">您确定以<span class = "price" id="buyPrice"></span>NAS/单位的价格购买<span class = "number" id="numOfRsc"></span>单位个<span class = "resourceName" id="buyResourceName"></span>吗？</div><div>这将花费您共计<span class = "total"></span>NAS。</div>
 		            </div>
 		            
 		            <div class="modal-footer">
-		            	<button type="button" class="btn btn-primary">&nbsp;确定&nbsp;</button>
+		            	<button type="button" class="btn btn-primary" id="confirmBuy">&nbsp;确定&nbsp;</button>
 		                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;关闭&nbsp;</button>
 	                </div>
 		        </div><!-- /.modal-content -->
@@ -150,7 +150,7 @@
 					listener: function (resp) {
 						console.log("thecallback is " + resp);
 						//resp中有如下的属性可以调用，根据state来渲染不同的模块，此处state只有“可购买“
-						/* this.transactionID = index;
+						/* this.transactionID = index; //这个需要传值到
 						this.seller = from; // 卖家
 						this.buyer = ''; // 买家
 						this.state = '可购买'; //交易状态
@@ -169,7 +169,8 @@
 	        	$("#buy").find(".number").text(selling[id].number);
 	        	$("#buy").find(".total").text(selling[id].number * selling[id].price);
 	        	$("#buy").find(".price").text(selling[id].price);
-	        	$("#buy").find(".resourceName").text(product[selling[id].rscType]);
+				$("#buy").find(".resourceName").text(product[selling[id].rscType]);
+				//这里需要传入TransactionID和seller
                 $("#buy").modal('show');
 	        }
 
@@ -190,7 +191,24 @@
 	            else{
                     $("#selling").html("<p>&nbsp</p><p>- 暂无记录 -</p><p>&nbsp</p>")
 	            }
-	        }
+			}
+			
+			$('#confirmBuy').click(function(){
+				var numberOfRsc = $('#numOfRsc').val();
+				var productName = $("#buyResourceName").val();
+				//此处还需要传入seller和transactionID
+				var from = dappContactAddress;
+				var value = "0";
+				var callFunction = "purchaseProduct";
+				var callArgs = "[\"" + seller + "\",\"" + transactionID + "\",\"" + productName + "\",\"" + numberOfRsc + "\"]";
+				console.log(callArgs);
+				
+				serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+					listener: function (resp) {
+						console.log("thecallback is " + resp)
+					}
+				});
+			})
 
 
 	    </script>

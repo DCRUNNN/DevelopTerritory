@@ -133,15 +133,15 @@
 		            <div class="modal-body">
 		                <div class = "row">
 		                    <div class = "priceHint col-xs-7">您将以___NAS/单位的价格出售<span class = "resourceName"></span>:</div>
-		                    <div class = "col-xs-3"><input class = "form-control" type = "number" min = "0" value = "1"></div>
+		                    <div class = "col-xs-3"><input class = "form-control" type = "number" min = "0" value = "1" id="NASprice"></div>
 		                </div>
 		                <div class = "row">
-		                    <div class = "col-xs-7">出售<span class = "resourceName"></span>单位数目为：</div><div class = "col-xs-3"><input class = "form-control" type = "number" min = "1" value = "1"></div>
+		                    <div class = "col-xs-7">出售<span class = "resourceName"></span>单位数目为：</div><div class = "col-xs-3"><input class = "form-control" type = "number" min = "1" value = "1" id="numOfRsc"></div>
 		                </div>
 		            </div>
 		            
 		            <div class="modal-footer">
-		            	<button type="button" class="btn btn-primary">&nbsp;确定&nbsp;</button>
+		            	<button type="button" class="btn btn-primary" id="confirmSell">&nbsp;确定&nbsp;</button>
 		                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;关闭&nbsp;</button>
 	                </div>
 		        </div><!-- /.modal-content -->
@@ -255,6 +255,7 @@
 
 		<script> 
 			"use strict";
+			var dappContactAddress;
 		    function checkID() {
 		        window.postMessage({
 		            "target": "contentscript",
@@ -264,13 +265,13 @@
 		        window.addEventListener('message', function (e) {
 		            if (e.data && e.data.data) {
 		                if (e.data.data.account) {//这就是当前钱包中的地址
-		                    var account = e.data.data.account;
+							var account = e.data.data.account;
+							dappContactAddress = e.data.data.account;
 		                }
 		            }
 		        });
 		    }
 			window.onload = function(){
-				var dappContactAddress = e.data.data.account;
 				var nebulas = require("nebulas"),
 					Account = nebulas.Account,
 					neb = new nebulas.Neb();
@@ -305,7 +306,28 @@
 					}
 				});
 			}
-		    
+			
+			$('#confirmSell').click(function(){
+				var price = $('#NASprice').val();
+				var numberOfRsc = $('#numOfRsc').val();
+				var productName = $("#sellWindow").find(".resourceName").val();
+				var productID;
+				var from = dappContactAddress;
+				var value = "0";
+				var callFunction = "sellProduct";
+				var callArgs = "[\"" + productID + "\",\"" + productName + "\",\"" + price + "\",\"" + numberOfRsc + "\"]";
+				console.log(callArgs);
+				
+				for(var i = 0;i<5;i++){
+					if(product[i] == productName)
+						productID = i;
+				}
+				serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+					listener: function (resp) {
+						console.log("thecallback is " + resp)
+					}
+				});
+			})
 		</script>
 
 		<script src="../resources/vue/vue.js"></script>
