@@ -329,7 +329,8 @@ TerritoryService.prototype = {
                     case "粮食":
                         item.numOfProduct -= 6;
                         break;
-                    default: break;
+                    default:
+                        break;
                 }
             }
             this.productRepo.set(from, productOfUser);
