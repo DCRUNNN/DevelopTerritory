@@ -3,82 +3,38 @@ var vm = new Vue({
     data:{
         productSubjects:['木头','砖块','羊毛','粮食','矿石'],
         buildingSubjects:['村庄','城市'],
-        woodProduct:{
-            productID: 0,
-            productName: '木头',
-            numOfProduct: 0
-        },
-        brickProduct:{
-            productID: 1,
-            productName: '砖块',
-            numOfProduct: 0
-        },
-        woolProduct:{
-            productID: 2,
-            productName: '羊毛',
-            numOfProduct: 0
-        },
-        foodProduct:{
-            productID: 3,
-            productName: '粮食',
-            numOfProduct: 0
-        },
-        mineralProduct:{
-            productID: 4,
-            productName: '矿石',
-            numOfProduct: 0
-        },
         //sell是正在出售中
         sellWoodProduct:{
-            numOfProduct: 0
+            owner = '',
+            numOfProduct: 0,
+            price = 0
         },
         sellBrickProduct:{
-            numOfProduct: 0
+            owner = '',
+            numOfProduct: 0,
+            price = 0
         },
         sellWoolProduct:{
-            numOfProduct: 0
+            owner = '',
+            numOfProduct: 0,
+            price = 0
         },
         sellFoodProduct:{
-            numOfProduct: 0
+            owner = '',
+            numOfProduct: 0,
+            price = 0
         },
         sellMineralProduct:{
-            numOfProduct: 0
-        },
-        //sold是已出售
-        soldWoodProduct:{
-            numOfProduct: 0
-        },
-        soldBrickProduct:{
-            numOfProduct: 0
-        },
-        soldWoolProduct:{
-            numOfProduct: 0
-        },
-        soldFoodProduct:{
-            numOfProduct: 0
-        },
-        soldMineralProduct:{
-            numOfProduct: 0
+            owner = '',
+            numOfProduct: 0,
+            price = 0
         }
     },
     methods:{
-        setWoodData: function(item){
-            this.woodProduct.numOfProduct = item.numOfProduct;
-        },
-        setBrickData: function(item){
-            this.brickProduct.numOfProduct = item.numOfProduct;
-        },
-        setWoolData: function(item){
-            this.woolProduct.numOfProduct = item.numOfProduct;
-        },
-        setFoodData: function(item){
-            this.foodProduct.numOfProduct = item.numOfProduct;
-        },
-        setMineralData: function(item){
-            this.mineralProduct.numOfProduct = item.numOfProduct;
-        },
         setSellMineralData: function(item){
             this.sellMineralProduct.numOfProduct = item.numOfProduct;
+            this.sellMineralProduct.owner = item.owner;
+            this.sellMineralProduct.price = item.price;
         },
         setSellWoodData: function(item){
             this.sellWoodProduct.numOfProduct = item.numOfProduct;
@@ -91,21 +47,6 @@ var vm = new Vue({
         },
         setSellWoolData: function(item){
             this.sellWoolProduct.numOfProduct = item.numOfProduct;
-        },
-        setSoldMineralData: function(item){
-            this.soldMineralProduct.numOfProduct = item.numOfProduct;
-        },
-        setSoldWoodData: function(item){
-            this.soldWoodProduct.numOfProduct = item.numOfProduct;
-        },
-        setSoldFoodData: function(item){
-            this.soldFoodProduct.numOfProduct = item.numOfProduct;
-        },
-        setSoldBrickData: function(item){
-            this.soldBrickProduct.numOfProduct = item.numOfProduct;
-        },
-        setSoldWoolData: function(item){
-            this.soldWoolProduct.numOfProduct = item.numOfProduct;
         }
     },
     mounted(){
