@@ -92,10 +92,29 @@
 
 			<h2>出售中</h2>
 			<div class = "row" id = "selling">
+                <div v-if="selling" v-for="(s, i) in selling" class = "sellDiv">
+					<div class='btn-pic'>
+						<img src = "images/resources/'product[s.rscType]'.png">
+						<p>{{product[s.rscType]}}</p>
+						<p class = 'numLabel'>出售数量: <span>{{s.number}}单位</span></p>
+						<p class = 'numLabel'>出售价格: <span>{{s.price}}NAS</span></p>
+						<a class = 'btn btn-default form-control' onclick="deleteSelling('i')">删除</a>
+					</div>
+				</div>
+				<div v-else>&nbsp;<p></p><p>- 暂无记录 -</p><p>&nbsp;</p><p></div>
 			</div>
 
 			<h2>已售出</h2>
 			<div class = "row" id = "sold">
+			    <div v-if="sold" v-for="(s, i) in sold" class = "soldDiv">
+					<div class='btn-pic'>
+						<img src = "images/resources/'product[s.rscType]'.png">
+						<p>{{product[s.rscType]}}</p>
+						<p class = 'numLabel'>出售数量: <span>{{s.number}}单位</span></p>
+						<p class = 'numLabel'>出售价格: <span>{{s.price}}NAS</span></p>
+					</div>
+				</div>
+				<div v-else>&nbsp;<p></p><p>- 暂无记录 -</p><p>&nbsp;</p><p></div>
 			</div>
 
 	    </div>
@@ -138,10 +157,9 @@
 
 		
 	    <script>
-
 	        var product = ["木头", "砖块", "羊毛", "粮食", "矿石"];
 
-	        var rscNum = [10, 234, 34, 324, 23];
+	        //var rscNum = [10, 234, 34, 324, 23];
 
 	        var selling = ([{"rscType": 0, "price": 23, "number" : 50}, {"rscType": 0, "price": 24, "number" : 50}, {"rscType": 0, "price": 25, "number" : 50}, {"rscType": 0, "price": 26, "number" : 50}, {"rscType": 0, "price": 23, "number" : 50}, {"rscType": 0, "price": 24, "number" : 50}, {"rscType": 0, "price": 25, "number" : 50}, {"rscType": 0, "price": 26, "number" : 50}]);
 
@@ -149,9 +167,9 @@
 
 	        $(window).on('load', function(){
 	        	var i = 0;
-                $(".rscNum").each(function(){
+                /*$(".rscNum").each(function(){
                 	$(this).text(rscNum[i++]);
-                })
+                })*/
 
 
 	        	loadSelling();
@@ -159,7 +177,7 @@
 	        })
 
 	        function loadSelling(){
-	        	if (selling.length >= 1)
+	        	/*if (selling.length >= 1)
 	        		for(var i = 0; i < selling.length; i++){
 	        		var sailInfo = "<div class='btn-pic'><img src = 'images/resources/" + product[selling[i].rscType] + ".png'><p>- " +product[selling[i].rscType]+ " -</p><p class = 'numLabel'>出售数量: <span>" + selling[i].number + " 单位</span></p><p class = 'numLabel'>出售价格: <span>" + selling[i].price + " NAS</span></p><a class = 'btn btn-default form-control' onclick='deleteSelling(" + i + ")'>删除</a></div>";
 	        		var rscDiv = $("<div class = 'col-sm-2 col-xs-5'></div>");
@@ -174,11 +192,23 @@
 	            }
 	            else{
                     $("#selling").html("<p>&nbsp</p><p>- 暂无记录 -</p><p>&nbsp</p>")
-	            }
+	            }*/
+	            var i = 0;
+	            $("#selling").find(".sellDiv").each(function(){
+	            	$(this).removeClass();
+	            	$(this).addClass(".sellDiv");
+	            	if(i % 5 == 0 && i % 2 == 0)
+	        			$(this).addClass("col-xs-offset-1");
+	        		else if(i % 5 == 0 )
+	        			$(this).addClass("col-sm-offset-1 col-xs-offset-0");
+	        		else if(i % 2 == 0)
+	        			$(this).addClass("col-sm-offset-0 col-xs-offset-1");
+	        		i++;
+	            })
 	        }
 
 	         function loadSold(){
-	         	if (sold.length >= 1)
+	         	/*if (sold.length >= 1)
 		        	for(var i = 0; i < sold.length; i++){
 		        		var soldInfo = "<div class='btn-pic'><img src = 'images/resources/" + product[sold[i].rscType] + ".png'><p>- " +product[sold[i].rscType]+ " -</p><p class = 'numLabel'>出售数量: <span>" + sold[i].number + " 单位</span></p><p class = 'numLabel'>出售价格: <span>" + sold[i].price + " NAS</span></p></div>";
 		        		var rscDiv = $("<div class = 'col-sm-2 col-xs-5'></div>");
@@ -193,12 +223,24 @@
 		            }
 		         else{
                     $("#sold").html("<p>&nbsp</p><p>- 暂无记录 -</p><p>&nbsp</p>")
-	            }
+	            }*/
+	            var i = 0;
+	            $("#sold").find(".soldDiv").each(function(){
+	            	$(this).removeClass();
+	            	$(this).addClass(".soldDiv");
+	            	if(i % 5 == 0 && i % 2 == 0)
+	        			$(this).addClass("col-xs-offset-1");
+	        		else if(i % 5 == 0 )
+	        			$(this).addClass("col-sm-offset-1 col-xs-offset-0");
+	        		else if(i % 2 == 0)
+	        			$(this).addClass("col-sm-offset-0 col-xs-offset-1");
+	        		i++;
+	            })
 	        }
 
 	        function deleteSelling(id){
                 selling.splice(id, 1);
-                $("#selling").empty();
+                //$("#selling").empty();
                 loadSelling();
 	        }
 
