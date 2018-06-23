@@ -1,231 +1,419 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-	<head>
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-	    <title>开疆拓土-排行榜</title>
-	    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" media="screen" />
-	    <!-- Bootstrap core CSS -->
-	    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 
-	    <!-- Custom CSS-->
-	     <link href="stylesheets/common.css" rel="stylesheet" />
-	     <link href="stylesheets/rank.css" rel="stylesheet" />
-	 </head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <title>开疆拓土-排行榜</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" media="screen" />
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 
-	<body>
-	    <nav id = "nav" class="navbar-default navbar-inverse" role="navigation">
-	        <div class="navbar-header">
-	            <div class = "title">
-	                <img class = "logo" src = "images/w_logo.png">
-	                <img class = "w_logo" src = "images/title.png">
-	            </div>
-	            <button type="button" class="navbar-toggle nav-content navbar-right" data-toggle="collapse" data-target="#navbar-collapse">
+    <!-- Custom CSS-->
+    <link href="stylesheets/common.css" rel="stylesheet" />
+    <link href="stylesheets/rank.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav id="nav" class="navbar-default navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <div class="title">
+                <img class="logo" src="images/w_logo.png">
+                <img class="w_logo" src="images/title.png">
+            </div>
+            <button type="button" class="navbar-toggle nav-content navbar-right" data-toggle="collapse" data-target="#navbar-collapse">
 	                <span class="sr-only">切换导航</span>
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
 	            </button>
-	        </div>
-	        <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
-			    <ul class = "nav navbar-nav">
-			      <li><a href = "index.html"><img src = "images/map.png">地图</a></li>
-			      <li><a href = "userInfoDemo.html"><img src = "images/brick.png">我的资源</a></li>
-			      <li><a href = "deal.html"><img src = "images/deal.png">交易所</a></li>
-			      <li class = "choosen"><a href = "#"><img src = "images/medal.png">排行榜</a></li>
-			      <li><a href = "instruction.html"><img src = "images/infor.png">说明</a></li>
-			    </ul>
-			    <ul class = "nav navbar-nav navbar-right">
-			      <li><a href = "https://blog.nebulas.io/2018/04/12/creating-a-nas-wallet/"><img src = "images/money.png">钱包插件</a></li>
-			    </ul>
-	        </div>
-	    </nav>
+        </div>
+        <div class="collapse navbar-collapse nav-content" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="index.html"><img src="images/map.png">地图</a>
+                </li>
+                <li>
+                    <a href="userInfoDemo.html"><img src="images/brick.png">我的资源</a>
+                </li>
+                <li>
+                    <a href="deal.html"><img src="images/deal.png">交易所</a>
+                </li>
+                <li class="choosen">
+                    <a href="#"><img src="images/medal.png">排行榜</a>
+                </li>
+                <li>
+                    <a href="instruction.html"><img src="images/infor.png">说明</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="https://blog.nebulas.io/2018/04/12/creating-a-nas-wallet/"><img src="images/money.png">钱包插件</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-	    <div class = "container">
-	    	<div class = "row">
-		    	<div class = "col-xs-offset-1 col-sm-5 col-xs-10">
-			    	<a class="btn btn-pic" id="cityBuilding" onclick="getBuildingRank(1)">
-			            <img src = "images/resources/城市.png">
-			            <p>- 查看城市排行榜 -</p>
-			        </a>
-			    </div>
-			    <div class = "col-xs-offset-1 col-sm-offset-0 col-sm-5 col-xs-10">
-			        <a class="btn btn-pic" id="villageBuilding" onclick="getBuildingRank(0)">
-			            <img src = "images/resources/村庄.png">
-			            <p>- 查看村庄排行榜 -</p>
-			        </a>
-			    </div>
-			</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-offset-1 col-sm-5 col-xs-10">
+                <a class="btn btn-pic" id="cityBuilding" onclick="getBuildingRank(1)">
+                    <img src="images/resources/城市.png">
+                    <p>- 查看城市排行榜 -</p>
+                </a>
+            </div>
+            <div class="col-xs-offset-1 col-sm-offset-0 col-sm-5 col-xs-10">
+                <a class="btn btn-pic" id="villageBuilding" onclick="getBuildingRank(0)">
+                    <img src="images/resources/村庄.png">
+                    <p>- 查看村庄排行榜 -</p>
+                </a>
+            </div>
+        </div>
 
-			<div class = "raw">
-			    <div class = "col-xs-offset-1 col-sm-2 col-xs-5">
-			        <a class="btn btn-pic" id="woodProduct" onclick="getProductRank(0)">
-			            <img src = "images/resources/木头.png">
-			            <p>- 木头排行榜 -</p>
-			        </a>
-			    </div>
-			    <div class = "col-sm-2 col-xs-5">
-			        <a class="btn btn-pic"  id="brickProduct" onclick="getProductRank(1)">
-			            <img src = "images/resources/砖头.png">
-			            <p>- 砖块排行榜 -</p>
-			        </a>
-			    </div>
-			    <div class = "col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
-			        <a class="btn btn-pic" id="woolProduct" onclick="getProductRank(2)">
-			            <img src = "images/resources/羊毛.png">
-			            <p>- 羊毛排行榜 -</p>
-			        </a>
-			    </div>
-			    <div class = "col-sm-2 col-xs-5">
-			        <a class="btn btn-pic" id="foodProduct" onclick="getProductRank(3)">
-			            <img src = "images/resources/粮食.png">
-			            <p>- 粮食排行榜 -</p>
-			        </a>
-			    </div>
-			    <div class = "col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
-			        <a class="btn btn-pic" id="mineralProduct" onclick="getProductRank(4)"">
-			            <img src = "images/resources/矿石.png">
-			            <p>- 矿石排行榜 -</p>
-			        </a>
-			    </div>
-			</div>
-	    </div>
+        <div class="raw">
+            <div class="col-xs-offset-1 col-sm-2 col-xs-5">
+                <a class="btn btn-pic" id="woodProduct" onclick="getProductRank(0)">
+                    <img src="images/resources/木头.png">
+                    <p>- 木头排行榜 -</p>
+                </a>
+            </div>
+            <div class="col-sm-2 col-xs-5">
+                <a class="btn btn-pic" id="brickProduct" onclick="getProductRank(1)">
+                    <img src="images/resources/砖头.png">
+                    <p>- 砖块排行榜 -</p>
+                </a>
+            </div>
+            <div class="col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
+                <a class="btn btn-pic" id="woolProduct" onclick="getProductRank(2)">
+                    <img src="images/resources/羊毛.png">
+                    <p>- 羊毛排行榜 -</p>
+                </a>
+            </div>
+            <div class="col-sm-2 col-xs-5">
+                <a class="btn btn-pic" id="foodProduct" onclick="getProductRank(3)">
+                    <img src="images/resources/粮食.png">
+                    <p>- 粮食排行榜 -</p>
+                </a>
+            </div>
+            <div class="col-xs-offset-1 col-sm-offset-0 col-sm-2 col-xs-5">
+                <a class="btn btn-pic" id="mineralProduct" onclick="getProductRank(4)">
+                    <img src="images/resources/矿石.png">
+                    <p>- 矿石排行榜 -</p>
+                </a>
+            </div>
+        </div>
+    </div>
 
-	    <div class="modal fade" id="rank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                <h4 class="modal-title" id="myModalLabel"><img src = "images/dark/medal.png">排行榜</h4>
-		            </div>
-		            <div class="modal-body">
-		                <table id="rankTable">
-		                    <tr>
-		                        <th class = "num">排名</th>
-		                        <th>钱包id</th>
-		                        <th>资源数目</th>
-		                    </tr>
-	                    </table>
-		            </div>
-		        </div><!-- /.modal-content -->
-		    </div><!-- /.modal -->
-		</div>
+    <div class="modal fade" id="rank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"><img src="images/dark/medal.png">排行榜</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="rankTable">
+                        <tr>
+                            <th class="num">排名</th>
+                            <th>钱包id</th>
+                            <th>资源数目</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
 
-	    <div class = "footer">
-	        <a href = "#">@Copyright 2018</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href = "#">联系我们: wechat this_songjian</a> 
-	    </div>
+    <div class="footer">
+        <a href="#">@Copyright 2018</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">联系我们: wechat this_songjian</a>
+    </div>
 
-		<script src="../dist/js/jquery-3.3.1.min.js"></script>
-		<script src="../dist/js/jquery.fullPage.js"></script>
-		<script src="../dist/js/nebulas/nebPay.js"></script>
-		<script src="../dist/js/nebulas/nebulas.js"></script>
+    <script src="../dist/js/jquery-3.3.1.min.js"></script>
+    <script src="../dist/js/jquery.fullPage.js"></script>
+    <script src="../dist/js/nebulas/nebPay.js"></script>
+    <script src="../dist/js/nebulas/nebulas.js"></script>
 
-		<script src="../resources/bootstrap/js/bootstrap.js"></script>
+    <script src="../resources/bootstrap/js/bootstrap.js"></script>
 
 
-		<script>
-		    function checkID() {
-		        window.postMessage({
-		            "target": "contentscript",
-		            "data": {},
-		            "method": "getAccount",
-		        }, "*");
-		        window.addEventListener('message', function (e) {
-		            if (e.data && e.data.data) {
-		                if (e.data.data.account) {//这就是当前钱包中的地址
-		                    var account = e.data.data.account;
-		                    if(account=='n1QVFUAEEE8Nz3TsCe2TtcW53ZVrR5Qb9af' || account=='n1Ft17PTSw7YjaQULBiKyBeMguZCcECqHek'){
-		                        window.location.href='createNovel.html';
-		                    }else{
-		                        alert("不好意思，只有管理员才可以新建小说，您可以去参与小说创作！");
-		                        return;
-		                    }
-		                }
-		            }
-		        });
-		    }
-		</script>
+    <script>
+        function checkID() {
+            window.postMessage({
+                "target": "contentscript",
+                "data": {},
+                "method": "getAccount",
+            }, "*");
+            window.addEventListener('message', function(e) {
+                if (e.data && e.data.data) {
+                    if (e.data.data.account) { //这就是当前钱包中的地址
+                        var account = e.data.data.account;
+                        if (account == 'n1QVFUAEEE8Nz3TsCe2TtcW53ZVrR5Qb9af' || account == 'n1Ft17PTSw7YjaQULBiKyBeMguZCcECqHek') {
+                            window.location.href = 'createNovel.html';
+                        } else {
+                            alert("不好意思，只有管理员才可以新建小说，您可以去参与小说创作！");
+                            return;
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 
-		<script>
+    <script>
+        "use strict";
 
-		    "use strict";
+        var dappContactAddress = "n1gWbChQ3qq6sLc1V6Cn5Vwy65RnB5nU8cp";
+        var nebulas = require("nebulas"),
+            Account = nebulas.Account,
+            neb = new nebulas.Neb();
+        neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
 
-		    var dappContactAddress = "n1gWbChQ3qq6sLc1V6Cn5Vwy65RnB5nU8cp";
-		    var nebulas = require("nebulas"),
-		        Account = nebulas.Account,
-		        neb = new nebulas.Neb();
-		    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+        // NebPay SDK 为不同平台的交易提供了统一的支付接口
+        // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
+        var NebPay = require("nebpay");
+        var nebPay = new NebPay();
 
-		    // NebPay SDK 为不同平台的交易提供了统一的支付接口
-		    // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
-		    var NebPay = require("nebpay");
-		    var nebPay = new NebPay();
+        var building = ["村庄", "城市"];
+        var product = ["木头", "砖块", "羊毛", "粮食", "矿石"];
 
-		    var building = ["村庄", "城市"];
-		    var product = ["木头", "砖块", "羊毛", "粮食", "矿石"];
+        // 执行合约返回的交易流水号，用于查询交易信息
+        var serialNumber;
 
-		    // 执行合约返回的交易流水号，用于查询交易信息
-		    var serialNumber;
-		    
-		    function compare(property){
-		        return function(a,b){
-		            return a[property] - b[property];
-		        }
-		    }
+        function compare(property) {
+            return function(a, b) {
+                return a[property] - b[property];
+            }
+        }
 
-		    function getBuildingRank(buildingID) {
-		    	$("#myModalLabel").html("<img src = 'images/dark/medal.png'>" + building[buildingID] + "排行榜");
-		    	$('#rank').modal('show');
-		        var to = dappContactAddress;
-		        var value = "0";
-		        var callFunction = "getBuilding";
-		        var callArgs = "[\"" + buildingID + "\"]";
-		        console.log(callArgs);
+        function getBuildingRank(buildingID) {
+            $("#myModalLabel").html("<img src = 'images/dark/medal.png'>" + building[buildingID] + "排行榜");
+            $('#rank').modal('show');
+            var to = dappContactAddress;
+            var value = "0";
+            var callFunction = "getAllBuildings";
+            var callArgs = "[\"" + buildingID + "\"]";
+            console.log(callArgs);
 
-		        serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
-		            listener: function (resp) {
-		                //console.log("thecallback is " + resp)
-		                console.log("The result is:"+ resp.result);
-		                var sortResult = resp.result;
-		                sortResult = sortResult.sort(compare('numOfBuilding'));
-		                var length = sortResult.length>100 ? 100 : sortResult.length;
-		                for(var i = 0;i<length;i++){
-		                    var ele = '<tr>'+ "<td class = 'num'>" + i + "</td><td>" + sortResult[i].checkID + '</td>'+ sortResult[i].numOfBuilding + '</td>';
-		                    $('#rank').append(ele);//这里的ID是瞎写的
-		                }
-		            }
-		        });
-		    }
+            serialNumber = nebPay.call(to, value, callFunction, callArgs, { //使用nebpay的call接口去调用合约,
+                listener: function(resp) {
+                    //console.log("thecallback is " + resp)
+                    /*
+                    console.log("The result is:" + resp.result);
+                    var sortResult = resp.result;
+                    sortResult = sortResult.sort(compare('numOfBuilding'));
+                    var length = sortResult.length > 100 ? 100 : sortResult.length;
+                    for (var i = 0; i < length; i++) {
+                        var ele = '<tr>' + "<td class = 'num'>" + i + "</td><td>" + sortResult[i].checkID + '</td>' + sortResult[i].numOfBuilding + '</td>';
+                        $('#rank').append(ele); //这里的ID是瞎写的
+					}
+					*/
 
-		    function getProductRank(productID) {
-		    	$("#myModalLabel").html("<img src = 'images/dark/medal.png'>" + product[productID] + "排行榜");
-		    	$('#rank').modal('show');
-		        var to = dappContactAddress;
-		        var value = "0";
-		        var callFunction = "getProduct";
-		        var callArgs = "[\"" + productID + "\"]";
-		        console.log(callArgs);
+                    var result = resp.result;
 
-		        serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
-		            listener: function (resp) {
-		                console.log("thecallback is " + resp);
-		                var sortResult = resp.result;
-		                sortResult = sortResult.sort(compare('numOfProduct'));
-		                var length = sortResult.length>100 ? 100 : sortResult.length;
-		                for(var i = 0;i<length;i++){
-		                     var ele = '<tr>'+ "<td class = 'num'>" + i + "</td><td>" + sortResult[i].checkID + '</td>'+ sortResult[i].numOfBuilding + '</td>';
-		                    $('#rankTable').append(ele);//这里的ID是瞎写的
-		                }
-		            }
-		        });
-		    }
+                    var cityRank = new Array();
+                    var villageRank = new Array();
+                    var rankObject = {
+                        owner: '',
+                        num: 0
+                    }
 
-		</script>
+                    console.log(result);
 
-		<script src="../resources/vue/vue.js"></script>
-		<script src="../resources/vue-resource/vue-resource.js"></script>
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].buildingType == '城市') {
+                            if (cityRank[result[i].owner]) {
+                                cityRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                cityRank[result[i].owner] = newRank;
+                            }
+                        } else {
+                            if (villageRank[result[i].owner]) {
+                                villageRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                villageRank[result[i].owner] = newRank;
+                            }
+                        }
+                    }
 
-		<script src="../dist/js/pages/rankDemo.js"></script>
-	</body>
+                    function compare(property) {
+                        return function(a, b) {
+                            return a[property] - b[property];
+                        }
+                    }
+
+                    cityRank = cityRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+                    villageRank = villageRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+
+                    if (buildingId == 1) {
+                        //var length = cityRank.length > 100 ? 100 : cityRank.length;
+                        var count = 1;
+                        for (i in cityRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    } else {
+                        //var length = villageRank.length > 100 ? 100 : villageRank.length;
+                        var count = 1;
+                        for (i in villageRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    }
+                }
+            });
+        }
+
+        function getProductRank(productID) {
+            $("#myModalLabel").html("<img src = 'images/dark/medal.png'>" + product[productID] + "排行榜");
+            $('#rank').modal('show');
+            var to = dappContactAddress;
+            var value = "0";
+            var callFunction = "getAllProducts";
+            var callArgs = "[\"" + productID + "\"]";
+            console.log(callArgs);
+
+            serialNumber = nebPay.call(to, value, callFunction, callArgs, { //使用nebpay的call接口去调用合约,
+                listener: function(resp) {
+                    /*
+                    console.log("thecallback is " + resp);
+                    var sortResult = resp.result;
+                    sortResult = sortResult.sort(compare('numOfProduct'));
+                    var length = sortResult.length > 100 ? 100 : sortResult.length;
+                    for (var i = 0; i < length; i++) {
+                        var ele = '<tr>' + "<td class = 'num'>" + i + "</td><td>" + sortResult[i].checkID + '</td>' + sortResult[i].numOfBuilding + '</td>';
+                        $('#rankTable').append(ele); //这里的ID是瞎写的
+					}
+					*/
+                    var result = resp.result;
+                    console.log(result);
+                    var woodRank = new Array();
+                    var brickRank = new Array();
+                    var woolRank = new Array();
+                    var foodRank = new Array();
+                    var mineralRank = new Array();
+                    var rankObject = {
+                        owner: '',
+                        num: 0
+                    }
+
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].productName == '木头') {
+                            if (woodRank[result[i].owner]) {
+                                woodRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                woodRank[result[i].owner] = newRank;
+                            }
+                        } else if (result[i].productName == '砖块') {
+                            if (brickRank[result[i].owner]) {
+                                brickRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                brickRank[result[i].owner] = newRank;
+                            }
+                        } else if (result[i].productName == '羊毛') {
+                            if (woolRank[result[i].owner]) {
+                                woolRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                woolRank[result[i].owner] = newRank;
+                            }
+                        } else if (result[i].productName == '食物') {
+                            if (foodRank[result[i].owner]) {
+                                foodRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                foodRank[result[i].owner] = newRank;
+                            }
+                        } else {
+                            if (mineralRank[result[i].owner]) {
+                                mineralRank[result[i].owner].num += 1;
+                            } else {
+                                var newRank = new rankObject();
+                                newRank.owner = result[i].owner;
+                                newRank.num = 1;
+                                mineralRank[result[i].owner] = newRank;
+                            }
+                        }
+                    }
+
+                    brickRank = brickRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+                    foodRank = foodRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+                    mineralRank = mineralRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+                    woodRank = woodRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+                    woolRank = woolRank.sort(function(a, b) {
+                        return a.num - b.num;
+                    });
+
+                    if (productID == 0) {
+                        var count = 1;
+                        for (i in woodRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    } else if (productID == 1) {
+                        var count = 1;
+                        for (i in brickRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    } else if (productID == 2) {
+                        var count = 1;
+                        for (i in woolRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    } else if (productID == 3) {
+                        var count = 1;
+                        for (i in foodRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    } else if (productID == 4) {
+                        var count = 1;
+                        for (i in mineralRank) {
+                            var ele = '<tr>' + "<td class = 'num'>" + count++ + "</td><td>" + i.owner + '</td>' + i.num + '</td>';
+                            $('#rank').append(ele); //这里的ID是瞎写的
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script src="../resources/vue/vue.js"></script>
+    <script src="../resources/vue-resource/vue-resource.js"></script>
+
+    <script src="../dist/js/pages/rankDemo.js"></script>
+</body>
+
 </html>

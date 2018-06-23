@@ -699,15 +699,15 @@ TerritoryService.prototype = {
     },
 
     //记录产生的幸运数字
-    recordLuckyNumber: function(luckyNum) {
+    recordLuckyNumber: function(luckyNum, time) {
         var luckyNums = this.luckyNumRepo.get('luckyNumList');
 
-        var timestamp = Date.parse(new Date()); //获取当前时间戳
+        //var timestamp = Date.parse(new Date()); //获取当前时间戳
         // var time = Blockchain.block.timestamp;
 
         var luckyNumItem = new LuckyNumItem();
         luckyNumItem.luckyNum = luckyNum;
-        luckyNumItem.generateTime = timestamp;
+        luckyNumItem.generateTime = time;
 
         luckyNums.push(luckyNumItem);
         this.luckyNumRepo.set('luckyNumList', luckyNums);
