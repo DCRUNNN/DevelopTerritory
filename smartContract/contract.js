@@ -754,6 +754,17 @@ TerritoryService.prototype = {
         return result;
     },
 
+    getOnSellTransaction: function() {
+        var items = this.productRepo.get('allTransactionList');
+        var result = [];
+        for (var i = 0; i < items.length; i++) {
+            var product = this.productRepo.get(items[i]);
+            if (product && product.state == "可购买") {
+                result.push(product);
+            }
+        }
+        return result;
+    },
     //通过资源ID获取资源的信息,用于排行榜
     getProduct: function(productID) {
         var allProducts = this.data.get('allProductList');
