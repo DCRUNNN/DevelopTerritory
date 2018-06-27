@@ -3,9 +3,43 @@ var _ordertimer = null;
 $(window).on('load', function() {
 
     //TODO: Get all info
+    var dappContactAddress = e.data.data.account;
+    var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"))
+
+    // NebPay SDK 为不同平台的交易提供了统一的支付接口
+    // 开发者在Dapp页面中使用NebPay API可以通过浏览器插件钱包、手机app钱包等实现交易支付和合约调用。
+    var NebPay = require("nebpay");
+    var nebPay = new NebPay();
+
+    // 执行合约返回的交易流水号，用于查询交易信息
+    var from = dappContactAddress;
+    var value = "0";
+    var callFunction = 'getTransactionByUser';
+    var callArgs = "[\"" + from + "\"]";
+    console.log(callArgs);
+
+    serialNumber = nebPay.call(from, value, callFunction, callArgs, { //使用nebpay的call接口去调用合约,
+        listener: function(resp) {
+            console.log("thecallback is " + resp);
+            //resp中有如下的属性可以调用，根据state来渲染不同的模块
+            /* this.transactionID = index;
+            this.seller = from; // 卖家
+            this.buyer = ''; // 买家
+            this.state = '可购买'; //交易状态
+            this.time = time; //交易发布时间
+            this.stuffName = productName; //卖的资源名称
+            this.stuffID = productID;
+            this.ammount = ammount;
+            this.availableAmmount = ammount;
+            this.price = price; //卖的价格*/
+        }
+    });
 
     luckyNums = ([
-        { "time": "2018-06-23 14:00:00", "number": -1 },
+        { "time": "2018-06-23 20:00:00", "number": -1 },
         { "time": "2018-06-23 13:50:00", "number": 3 },
         { "time": "2018-06-23 13:40:00", "number": 4 },
         { "time": "2018-06-23 13:30:00", "number": 5 },

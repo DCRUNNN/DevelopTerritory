@@ -310,7 +310,7 @@ TerritoryService.prototype = {
 
         var allBuildings = this.data.get('allBuildingList');
         allBuildings.push(building);
-        this.data.set('allBuildingList', allBuildings); //更新所有的建筑
+        this.data.put('allBuildingList', allBuildings); //更新所有的建筑
 
         //减少资源
         if (isFree == 0) {
@@ -333,7 +333,7 @@ TerritoryService.prototype = {
                         break;
                 }
             }
-            this.productRepo.set(from, productOfUser);
+            this.productRepo.put(from, productOfUser);
         }
 
     },
